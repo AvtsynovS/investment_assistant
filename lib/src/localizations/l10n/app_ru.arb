@@ -1,0 +1,45 @@
+{
+    "mainTitle": "Инвестиционный помощник",
+
+    "dealsTitle": "Сделки",
+    "ratesTitle": "Тарифы",
+    "historyTitle": "История",
+    "settingsTitle": "Настройки",
+
+    "profile": "Профиль",
+    "changeLanguage": "Сменить язык",
+    "changeTheme": "Сменить тему",
+    "exitInApp": "Выйти",
+
+    "english": "Английский",
+    "russian": "Русский",
+
+    "defaultName": "Инвестор",
+    "activeRate": "Активный тариф:",
+    "changeName": "Сменить имя",
+    "changePassword": "Сменить пароль",
+    "changeRate": "Сменить тариф",
+
+    "cancel": "Отмена",
+    "ok": "ОК",
+
+    "dealTitlePlaceholder": "Введите название актива",
+    "dealPricePlaceholder": "Введите цену актива",
+    "dealQuantityPlaceholder": "Введите количество",
+    "firstDealTitleBtn": "Создайте свою первую сделку!",
+    "addDealTitleBtn": "Добавить новую сделку",
+    "updateDealTitleBtn": "Обновить сделку",
+    "titleDeleteDeal": "Удалить сделку",
+    "descriptionDeleteDeal": "Вы уверены, что хотите удалить сделку?",
+    "quantity": "Количество",
+    "rub": "руб",
+    "buy": "Покупка",
+    "sell": "Продажа",
+    "stock": "Акция",
+    "pound": "Облигация",
+    "titleDeal": "Название сделки",
+    "typeDeal": "Тип сделки",
+    "titleDealError": "Пожалуйста введите название актива",
+    "buyDealError": "Пожалуйста введите цену",
+    "quantityDealError": "Пожалуйста введите количество"
+}

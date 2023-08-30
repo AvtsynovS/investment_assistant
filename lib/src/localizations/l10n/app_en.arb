@@ -1,0 +1,45 @@
+{
+    "mainTitle": "Investment Assistant",
+
+    "dealsTitle": "Deals",
+    "ratesTitle": "Rates",
+    "historyTitle": "History",
+    "settingsTitle": "Settings",
+
+    "profile": "Profile",
+    "changeLanguage": "Change language",
+    "changeTheme": "Change theme",
+    "exitInApp": "Exit",
+
+    "english": "English",
+    "russian": "Russian",
+
+    "defaultName": "Investor",
+    "activeRate": "Active rate:",
+    "changeName": "Change Name",
+    "changePassword": "Change password",
+    "changeRate": "Change rate",
+
+    "cancel": "Cancel",
+    "ok": "OK",
+
+    "dealTitlePlaceholder": "Enter your deal title",
+    "dealPricePlaceholder": "Enter price deal",
+    "dealQuantityPlaceholder": "Enter quantity",
+    "firstDealTitleBtn": "Make your first deal!",
+    "addDealTitleBtn": "Add new deal",
+    "updateDealTitleBtn": "Update deal",
+    "titleDeleteDeal": "Delete deal",
+    "descriptionDeleteDeal": "Are you sure you want to delete the deal?",
+    "quantity": "Quantity",
+    "rub": "rub",
+    "buy": "Buy",
+    "sell": "Sell",
+    "stock": "Stock",
+    "pound": "Pound",
+    "titleDeal": "Title deal",
+    "typeDeal": "Deal Type",
+    "titleDealError": "Please enter deal title",
+    "buyDealError": "Please enter buy price",
+    "quantityDealError": "Please enter quantity"
+}

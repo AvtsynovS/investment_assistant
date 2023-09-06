@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:investment_assistant/src/themes/theme.dart';
 
 class CustomTheme {
+  // ##### Light Theme #####
   static ThemeData lightTheme = ThemeData(
-    listTileTheme: ListTileThemeData(
+    checkboxTheme: CheckboxThemeData(
+      checkColor: MaterialStateProperty.all(checkedLightColor),
+      fillColor: MaterialStateProperty.all(checkboxBackgroundLightColor),
+      shape: const CircleBorder(),
+    ),
+    listTileTheme: const ListTileThemeData(
       tileColor: tileLightColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(30.0),
+      // ),
       horizontalTitleGap: 20.0,
     ),
     fontFamily: 'Roboto',
@@ -90,12 +96,18 @@ class CustomTheme {
     ),
   );
 
+  // ##### Dark Theme #####
   static ThemeData darkTheme = ThemeData(
-    listTileTheme: ListTileThemeData(
+    checkboxTheme: CheckboxThemeData(
+      checkColor: MaterialStateProperty.all(checkedDarkColor),
+      fillColor: MaterialStateProperty.all(checkboxBackgroundDarkColor),
+      shape: const CircleBorder(),
+    ),
+    listTileTheme: const ListTileThemeData(
       tileColor: tileDarkColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(30.0),
+      // ),
       horizontalTitleGap: 20.0,
     ),
     fontFamily: 'Roboto',

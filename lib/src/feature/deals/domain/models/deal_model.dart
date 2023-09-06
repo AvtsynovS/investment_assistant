@@ -2,7 +2,7 @@ enum AssetsType {
   stocks,
   bonds,
 }
-// Возможно, чтобы менять статус на лету надо будет убрать final
+
 class Deal {
   final int id;
   final String assetsTitle;
@@ -14,10 +14,9 @@ class Deal {
   final double? sell;
   final double? proffit;
   final String? proffitPersent;
-  // TODO исправить, статус будет устанавливаться через cubit
-  final bool status;
+  bool status;
 
-  const Deal({
+  Deal({
     required this.id,
     required this.assetsTitle,
     required this.assetsType,

@@ -21,6 +21,8 @@ const Color primaryBackgroundDarkColor =
 const Color shadowDarkColor = Color(0xFF000000); // потом исправить цвет
 const Color tileDarkColor = Color(0xFF424242);
 const Color splashDarkColor = Color.fromARGB(255, 197, 225, 14);
+const Color checkedDarkColor = Color(0xFF000000);
+const Color checkboxBackgroundDarkColor = primaryDarkColor;
 
 // Light Theme Colors ПЕРЕДЕЛАТЬ
 const Color primaryLightColor = Color(0xFF8D12AB);
@@ -33,6 +35,8 @@ const Color backgroundLightColor = Color(0xFF8D12AB);
 const Color shadowLightColor = Color(0xFF000000);
 const Color tileLightColor = Color(0xFFE0E0E0);
 const Color splashLightColor = Color.fromARGB(255, 197, 225, 14);
+const Color checkedLightColor = Color(0xFFFFFFFF);
+const Color checkboxBackgroundLightColor = primaryLightColor;
 
 const headlineSmall = TextStyle(
   // fontFamily: 'Roboto',

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 class MyFormField extends StatelessWidget {
   const MyFormField({
     Key? key,

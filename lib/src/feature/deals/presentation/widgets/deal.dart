@@ -26,8 +26,8 @@ class DealScreen extends StatelessWidget {
       onLongPress: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.titleDeleteDeal),
-          content: Text(AppLocalizations.of(context)!.descriptionDeleteDeal),
+          title: Text(AppLocalizations.of(context)!.deleteDealTitle),
+          content: Text(AppLocalizations.of(context)!.deleteDealDescription),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -35,8 +35,7 @@ class DealScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<DealsCubit>().deleteDeals(deal.id);
-                context.read<DealsCubit>().deleteDeals(10);
+                context.read<DealsCubit>().deleteDeal(deal.id);
                 Navigator.pop(context, 'OK');
               },
               child: Text(AppLocalizations.of(context)!.ok),

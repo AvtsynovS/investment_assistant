@@ -140,7 +140,7 @@ class _UpdateDealState extends State<UpdateDeal> {
                                 buy: double.parse(_buyController.text),
                                 quantity: int.parse(_quantityController.text),
                                 status: true);
-                            context.read<DealsCubit>().updateDeals(deal);
+                            context.read<DealsCubit>().updateDeal(deal);
                             Navigator.pushNamed(context, '/');
                           }
                         },

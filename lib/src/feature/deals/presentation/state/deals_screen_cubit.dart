@@ -16,11 +16,11 @@ class DealsCubit extends Cubit<DealsCubitState> {
     return state;
   }
 
-  void addDeals(Deal deal) {
+  void addDeal(Deal deal) {
     emit(state.copyWith(deals: [...state.deals, deal]));
   }
 
-  void updateDeals(Deal deal) {
+  void updateDeal(Deal deal) {
     List<Deal> allDeals = List.from(state.deals);
     final index = allDeals.indexWhere((element) => element.id == deal.id);
     allDeals[index] = deal;
@@ -28,7 +28,15 @@ class DealsCubit extends Cubit<DealsCubitState> {
     emit(state.copyWith(deals: allDeals));
   }
 
-  void deleteDeals(int id) {
+  void updateDealStatus(int id, bool status) {
+    List<Deal> allDeals = List.from(state.deals);
+    final index = allDeals.indexWhere((element) => element.id == id);
+    allDeals[index].status = true;
+
+    emit(state.copyWith(deals: allDeals));
+  }
+
+  void deleteDeal(int id) {
     final List<Deal> newState =
         state.deals.where((element) => element.id != id).toList();
     emit(state.copyWith(deals: newState));

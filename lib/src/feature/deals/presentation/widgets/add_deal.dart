@@ -134,7 +134,7 @@ class _AddDealState extends State<AddDeal> {
                                 buy: double.parse(_buyController.text),
                                 quantity: int.parse(_quantityController.text),
                                 status: true);
-                            context.read<DealsCubit>().addDeals(deal);
+                            context.read<DealsCubit>().addDeal(deal);
                             Navigator.pushNamed(context, '/');
                           }
                         },

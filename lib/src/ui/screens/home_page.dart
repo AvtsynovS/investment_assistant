@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:investment_assistant/src/feature/deals/presentation/screen/deals_screen.dart';
+import 'package:investment_assistant/src/feature/rates/presentation/screens/rates_screen.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/screen/settings.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({required this.selectedTab, Key? key}) : super(key: key);
+
+  final int selectedTab;
 
   @override
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends State {
+class HomePageState extends State<HomePage> {
   int _selectedTab = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  _selectedTab = widget.selectedTab;
+  }
 
   final List _pages = [
     Container(
@@ -22,7 +31,7 @@ class HomePageState extends State {
     ),
     Container(
       alignment: Alignment.center,
-      child: const Text('Rates screen widget'),
+      child: const RatesScreen(),
     ),
     Container(
       alignment: Alignment.center,

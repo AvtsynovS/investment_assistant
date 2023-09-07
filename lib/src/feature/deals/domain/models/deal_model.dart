@@ -11,9 +11,10 @@ class Deal {
   final int quantity;
   final String? createAt;
   final String? finishDate;
-  final double? sell;
-  final double? proffit;
-  final String? proffitPersent;
+  final double? additinalProfit;
+  double? sell;
+  double? profit;
+  double? profitPersent;
   bool status;
 
   Deal({
@@ -22,11 +23,12 @@ class Deal {
     required this.assetsType,
     required this.buy,
     required this.quantity,
-    required this.status,
+    this.status = true,
     this.createAt,
     this.finishDate,
-    this.proffit,
-    this.proffitPersent,
+    this.profit,
+    this.profitPersent,
+    this.additinalProfit,
     this.sell,
   });
 }

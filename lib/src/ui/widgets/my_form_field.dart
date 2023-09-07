@@ -6,14 +6,14 @@ class MyFormField extends StatelessWidget {
     Key? key,
     required this.fieldTitle,
     required this.myController,
-    required this.validation,
+    this.validation,
     this.typeField,
     this.autofocus,
     this.hintText,
   }) : super(key: key);
 
   final TextEditingController myController;
-  final String? Function(String?) validation;
+  final String? Function(String?)? validation;
   final String fieldTitle;
   final TextInputType? typeField;
   final String? hintText;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
+import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
+import 'package:investment_assistant/src/ui/screens/home_page.dart';
 
 import '../../../../ui/widgets/my_form_field.dart';
 import '../state/deals_screen_cubit.dart';
@@ -23,9 +25,34 @@ class _UpdateDealState extends State<UpdateDeal> {
   final _titleDealController = TextEditingController();
   final _quantityController = TextEditingController();
   final _buyController = TextEditingController();
+  final _additinalProfitController = TextEditingController();
+  final _sellController = TextEditingController();
 
   final _dealType = ['stock', 'pound'];
   String _selectedType = '';
+
+  _showActiveRateError(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.rateError),
+        content: Text(AppLocalizations.of(context)!.rateErrorDescription),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return const HomePage(selectedTab: 1);
+                }),
+              );
+            },
+            child: Text(AppLocalizations.of(context)!.ok),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -34,6 +61,11 @@ class _UpdateDealState extends State<UpdateDeal> {
     _quantityController.text = widget.deal.quantity.toString();
     _buyController.text = widget.deal.buy.toString();
     _selectedType = widget.deal.assetsType;
+    _additinalProfitController.text = widget.deal.additinalProfit != null
+        ? widget.deal.additinalProfit.toString()
+        : '';
+    _sellController.text =
+        widget.deal.sell != null ? widget.deal.sell.toString() : '';
   }
 
   @override
@@ -45,6 +77,7 @@ class _UpdateDealState extends State<UpdateDeal> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DealsCubit, DealsCubitState>(builder: (context, state) {
+      final rates = context.read<RatesCubit>().state.rates;
       return Scaffold(
         body: SafeArea(
           child: Form(
@@ -98,33 +131,57 @@ class _UpdateDealState extends State<UpdateDeal> {
                       height: 20.0,
                     ),
                     MyFormField(
-                        fieldTitle: AppLocalizations.of(context)!.buy,
-                        myController: _buyController,
-                        typeField: TextInputType.number,
-                        validation: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!.buyDealError;
-                          }
-                          return null;
-                        },
-                        hintText:
-                            AppLocalizations.of(context)!.dealPricePlaceholder),
+                      fieldTitle: AppLocalizations.of(context)!.buy,
+                      myController: _buyController,
+                      typeField: TextInputType.number,
+                      validation: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!.buyDealError;
+                        }
+                        return null;
+                      },
+                      hintText:
+                          AppLocalizations.of(context)!.dealPricePlaceholder,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     MyFormField(
-                        fieldTitle: AppLocalizations.of(context)!.quantity,
-                        myController: _quantityController,
-                        typeField: TextInputType.number,
-                        validation: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .quantityDealError;
-                          }
-                          return null;
-                        },
-                        hintText: AppLocalizations.of(context)!
-                            .dealQuantityPlaceholder),
+                      fieldTitle: AppLocalizations.of(context)!.quantity,
+                      myController: _quantityController,
+                      typeField: TextInputType.number,
+                      validation: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!
+                              .quantityDealError;
+                        }
+                        return null;
+                      },
+                      hintText:
+                          AppLocalizations.of(context)!.dealQuantityPlaceholder,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    MyFormField(
+                      fieldTitle: _selectedType == 'stock'
+                          ? AppLocalizations.of(context)!.dividends
+                          : AppLocalizations.of(context)!.coupons,
+                      myController: _additinalProfitController,
+                      typeField: TextInputType.number,
+                      hintText: _selectedType == 'stock'
+                          ? AppLocalizations.of(context)!.dividendsSum
+                          : AppLocalizations.of(context)!.couponsSum,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    MyFormField(
+                      fieldTitle: AppLocalizations.of(context)!.sellTitle,
+                      myController: _sellController,
+                      typeField: TextInputType.number,
+                      hintText: AppLocalizations.of(context)!.sellPlaceholder,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -132,15 +189,43 @@ class _UpdateDealState extends State<UpdateDeal> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Deal deal = Deal(
-                                id: widget.deal.id,
-                                assetsTitle: _titleDealController.text,
-                                assetsType: _selectedType,
-                                buy: double.parse(_buyController.text),
-                                quantity: int.parse(_quantityController.text),
-                                status: true);
+                          Deal deal = Deal(
+                            id: widget.deal.id,
+                            assetsTitle: _titleDealController.text,
+                            assetsType: _selectedType,
+                            buy: double.parse(_buyController.text),
+                            quantity: int.parse(_quantityController.text),
+                            sell: _sellController.text != ''
+                                ? double.parse(_sellController.text)
+                                : null,
+                            additinalProfit: _additinalProfitController.text !=
+                                    ''
+                                ? double.parse(_additinalProfitController.text)
+                                : null,
+                          );
+
+                          final activeRate = rates.isNotEmpty
+                              ? rates.firstWhere(
+                                  (element) => element.isActive == true)
+                              : null;
+                          if (_formKey.currentState!.validate() &&
+                              _sellController.text != '' &&
+                              activeRate == null) {
                             context.read<DealsCubit>().updateDeal(deal);
+                            _showActiveRateError(context);
+                          }
+                          if (_formKey.currentState!.validate() &&
+                              _sellController.text == '' &&
+                              activeRate == null) {
+                            context.read<DealsCubit>().updateDeal(deal);
+                            Navigator.pushNamed(context, '/');
+                          }
+
+                          if (_formKey.currentState!.validate() &&
+                              activeRate != null) {
+                            context
+                                .read<DealsCubit>()
+                                .updateDealBySell(deal, activeRate);
                             Navigator.pushNamed(context, '/');
                           }
                         },

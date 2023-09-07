@@ -52,17 +52,17 @@ class _AddRateState extends State<AddRate> {
                       height: 5.0,
                     ),
                     MyFormField(
-                      fieldTitle: AppLocalizations.of(context)!.titleRate,
+                      fieldTitle: AppLocalizations.of(context)!.rateTitle,
                       myController: _titleRateController,
                       validation: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.titleRateError;
+                          return AppLocalizations.of(context)!.rateTitleError;
                         }
                         return null;
                       },
                       autofocus: true,
                       hintText:
-                          AppLocalizations.of(context)!.titleRatePlaceholder,
+                          AppLocalizations.of(context)!.rateTitlePlaceholder,
                     ),
                     const SizedBox(
                       height: 20.0,

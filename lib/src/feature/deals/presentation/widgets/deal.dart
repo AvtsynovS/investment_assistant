@@ -6,6 +6,7 @@ import 'package:investment_assistant/src/feature/deals/presentation/state/deals_
 import 'package:investment_assistant/src/feature/deals/presentation/widgets/update_deal.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:investment_assistant/src/themes/theme.dart';
 
 class DealScreen extends StatelessWidget {
   const DealScreen({required this.deal, super.key});
@@ -45,7 +46,7 @@ class DealScreen extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        height: 115,
+        height: 130,
         margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
@@ -61,10 +62,19 @@ class DealScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  deal.assetsTitle,
+                RichText(
+                    text: TextSpan(
+                  text: '${deal.assetsTitle} ',
                   style: Theme.of(context).textTheme.titleLarge,
-                ),
+                  children: [
+                    TextSpan(
+                      text: deal.assetsType == 'stock'
+                          ? AppLocalizations.of(context)!.stock
+                          : AppLocalizations.of(context)!.pound,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                )),
                 Padding(
                   padding: const EdgeInsets.only(top: 6.0),
                   child: RichText(
@@ -76,7 +86,7 @@ class DealScreen extends StatelessWidget {
                           text: '${deal.quantity}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: const Color(0xFF06BF28),
+                                    color: AppColors.profitColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
@@ -85,12 +95,81 @@ class DealScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: Text(
-                    deal.assetsType == 'stock'
-                        ? AppLocalizations.of(context)!.stock
-                        : AppLocalizations.of(context)!.pound,
-                    style: Theme.of(context).textTheme.bodySmall,
+                  padding: const EdgeInsets.fromLTRB(0, 6.0, 0, 5.0),
+                  child: RichText(
+                    text: TextSpan(
+                        text: deal.assetsType == 'stock'
+                            ? AppLocalizations.of(context)!.dividends
+                            : AppLocalizations.of(context)!.coupons,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        children: [
+                          TextSpan(
+                            text: deal.additinalProfit != null
+                                ? ' ${deal.additinalProfit}'
+                                : '',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: AppColors.profitColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                        ]),
+                  ),
+                ),
+                SizedBox(
+                  width: 200.0,
+                  child: RichText(
+                    maxLines: 2,
+                    text: TextSpan(
+                      text:
+                          '${AppLocalizations.of(context)!.yield}, ${AppLocalizations.of(context)!.rub}:  ',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      children: deal.profit != null
+                          ? [
+                              TextSpan(
+                                text: deal.profit?.toStringAsFixed(2) ?? '',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: (deal.profit != null &&
+                                              deal.profit!.isNegative)
+                                          ? AppColors.lesionColor
+                                          : AppColors.profitColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ]
+                          : [],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 200.0,
+                  child: RichText(
+                    maxLines: 2,
+                    text: TextSpan(
+                      text: '${AppLocalizations.of(context)!.yield}, %:  ',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      children: deal.profit != null
+                          ? [
+                              TextSpan(
+                                text: deal.profitPersent?.toStringAsFixed(2) ??
+                                    '',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: (deal.profit != null &&
+                                              deal.profit!.isNegative)
+                                          ? AppColors.lesionColor
+                                          : AppColors.profitColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ]
+                          : [],
+                    ),
                   ),
                 ),
               ],
@@ -98,22 +177,14 @@ class DealScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: '+200 ${AppLocalizations.of(context)!.rub}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                    children: [
-                      TextSpan(
-                        text: ' | ',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: const Color(0xFF07CF25),
-                            ),
-                      ),
-                      TextSpan(
-                        text: '-20%',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 5.0, 2.0, 8.0),
+                  child: Icon(
+                    Icons.circle,
+                    size: 10.0,
+                    color: deal.status
+                        ? AppColors.activeColor
+                        : AppColors.deactiveColor,
                   ),
                 ),
                 Padding(
@@ -127,7 +198,7 @@ class DealScreen extends StatelessWidget {
                           text: '${deal.buy}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: const Color(0xFF07CF25),
+                                    color: AppColors.profitColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
@@ -147,10 +218,10 @@ class DealScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       children: [
                         TextSpan(
-                          text: deal.sell != null ? deal.sell.toString() : '',
+                          text: deal.sell?.toString() ?? '',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: const Color(0xFF07CF25),
+                                    color: AppColors.profitColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
@@ -160,16 +231,6 @@ class DealScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8.0, 2.0, 0.0),
-                  child: Icon(
-                    Icons.circle,
-                    size: 10.0,
-                    color: deal.status
-                        ? const Color(0xFF07CF25)
-                        : const Color(0xFFF51000),
                   ),
                 ),
               ],

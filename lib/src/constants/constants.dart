@@ -38,27 +38,24 @@ const Color splashLightColor = Color.fromARGB(255, 197, 225, 14);
 const Color checkedLightColor = Color(0xFFFFFFFF);
 const Color checkboxBackgroundLightColor = primaryLightColor;
 
-const headlineSmall = TextStyle(
-  // fontFamily: 'Roboto',
-  fontWeight: FontWeight.w500,
-  fontSize: 16.0,
-  // color: primaryDarkColor,
-);
-const headlineMedium = TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0);
-const bodyMedium = TextStyle(
-  fontWeight: FontWeight.w400,
-  fontSize: 18.0,
-  // fontFamily: 'Roboto',
-);
 const labelSmall = TextStyle(
   fontWeight: FontWeight.w400,
   fontSize: 14.0,
-  // fontFamily: 'Roboto',
 );
-const headline2 = TextStyle(
+
+const headlineSmall = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 16.0,
+);
+
+const headlineMedium = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 20.0,
+);
+
+const bodyMedium = TextStyle(
   fontWeight: FontWeight.w400,
-  fontSize: 14,
-  // fontFamily: 'Roboto',
+  fontSize: 14.0,
 );
 
 abstract class LightTheme {
@@ -87,4 +84,9 @@ abstract class AppColors {
   static const lightDark = Color(0xFF1b1b1b);
 
   static const purpleAccent = Colors.purpleAccent;
+
+  static const Color profitColor = Color(0xFF07CF25);
+  static const Color lesionColor = Color(0xFFED0F0F);
+  static const Color deactiveColor = Color(0xFFED0F0F);
+  static const Color activeColor = Color(0xFF07CF25);
 }

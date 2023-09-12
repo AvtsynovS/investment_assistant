@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class ExitModal extends StatefulWidget {
   const ExitModal({
@@ -12,25 +13,27 @@ class ExitModal extends StatefulWidget {
 }
 
 class _ExitModalState extends State<ExitModal> {
-
-    void _exitApp() {
+  void _exitApp() {
     (Platform.isAndroid) ? SystemNavigator.pop() : () => exit(0);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-          content: const Text('Вы точно хотите выйти?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Нет'),
-              child: const Text('Нет'),
-            ),
-            TextButton(
-              onPressed: () => _exitApp(),
-              child: const Text('Да'),
-            ),
-          ],
-        );
+      content: const Text('Вы точно хотите выйти?'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Нет'),
+          child: const Text('Нет'),
+        ),
+        TextButton(
+          onPressed: () {
+            Hive.close();
+            _exitApp();
+          },
+          child: const Text('Да'),
+        ),
+      ],
+    );
   }
 }

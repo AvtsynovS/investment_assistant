@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
 import 'package:investment_assistant/src/feature/rates/domain/models/rate_model.dart';
 
@@ -17,11 +18,45 @@ class DealsCubit extends Cubit<DealsCubitState> {
     return state;
   }
 
-  void addDeal(Deal deal) {
-    emit(state.copyWith(deals: [...state.deals, deal]));
+  List<Deal> allDeals = [];
+  List<int>? keys = [];
+
+  initDeals() async {
+    var box = await Hive.openBox<Deal>('deals');
+    keys = [];
+    keys = box.keys.cast<int>().toList();
+    allDeals = [];
+
+    if (box.isNotEmpty) {
+      for (final key in keys!) {
+        allDeals.add(box.get(key)!);
+      }
+    }
+
+    box.close();
+    emit(state.copyWith(deals: allDeals));
   }
 
-  void updateDeal(Deal deal) {
+  void addDeal(Deal deal) async {
+    await Hive.openBox<Deal>('deals')
+        .then((deals) => deals.put(deal.id, deal))
+        .then((value) => initDeals());
+  }
+
+  void updateDeal(Deal deal) async {
+    await Hive.openBox<Deal>('deals').then((value) {
+      final Map<dynamic, Deal> dealsMap = value.toMap();
+      dynamic activeKey;
+      dealsMap.forEach((key, value) {
+        if (value.id == deal.id) {
+          activeKey = key;
+        }
+      });
+      return value.put(activeKey, deal);
+    }).then(
+      (value) => initDeals(),
+    );
+
     List<Deal> allDeals = List.from(state.deals);
     final index = allDeals.indexWhere((element) => element.id == deal.id);
 
@@ -30,7 +65,7 @@ class DealsCubit extends Cubit<DealsCubitState> {
     emit(state.copyWith(deals: allDeals));
   }
 
-  void updateDealBySell(Deal deal, Rate activeRate) {
+  void updateDealBySell(Deal deal, Rate activeRate) async {
     List<Deal> allDeals = List.from(state.deals);
     final index = allDeals.indexWhere((element) => element.id == deal.id);
 
@@ -43,17 +78,17 @@ class DealsCubit extends Cubit<DealsCubitState> {
           deal.sell! / 100 * activeRate.transactionCommission;
       final double brokerComissionForBuy =
           deal.buy / 100 * activeRate.transactionCommission;
-      final double yield = deal.sell! -
+      final double income = deal.sell! -
           deal.buy -
           brokerComissionForBuy -
           brokerComissionForSell;
-      final double yieldWithoutTax = yield > 0 ? yield - rusTax(yield) : 0;
+      final double yieldWithoutTax = income > 0 ? income - rusTax(income) : 0;
 
       final double additinalProfitWithoutTax =
           deal.additinalProfit ?? 0 - rusTax(deal.additinalProfit ?? 0);
 
-      final double profit = yield < 0 ? yield : yieldWithoutTax;
-      final double yieldProfitPersent = yield < 0
+      final double profit = income < 0 ? income : yieldWithoutTax;
+      final double yieldProfitPersent = income < 0
           ? ((additinalProfitWithoutTax + deal.sell!) /
                       (deal.buy +
                           brokerComissionForBuy +
@@ -64,7 +99,7 @@ class DealsCubit extends Cubit<DealsCubitState> {
                       (deal.buy +
                           brokerComissionForBuy +
                           brokerComissionForSell +
-                          rusTax(yield)) -
+                          rusTax(income)) -
                   1) *
               100;
 
@@ -73,20 +108,38 @@ class DealsCubit extends Cubit<DealsCubitState> {
       deal.profitPersent = yieldProfitPersent;
     }
 
+    await Hive.openBox<Deal>('deals').then((value) {
+      final Map<dynamic, Deal> dealsMap = value.toMap();
+      dynamic activeKey;
+      dealsMap.forEach((key, value) {
+        if (value.id == deal.id) {
+          activeKey = key;
+        }
+      });
+      return value.put(activeKey, deal);
+    }).then(
+      (value) => initDeals(),
+    );
+
     allDeals[index] = deal;
 
     emit(state.copyWith(deals: allDeals));
   }
 
-  void updateDealStatus(int id, bool status) {
-    List<Deal> allDeals = List.from(state.deals);
-    final index = allDeals.indexWhere((element) => element.id == id);
-    allDeals[index].status = true;
+  void deleteDeal(int id) async {
+    await Hive.openBox<Deal>('deals').then((value) {
+      final Map<dynamic, Deal> dealsMap = value.toMap();
+      dynamic activeKey;
+      dealsMap.forEach((key, value) {
+        if (value.id == id) {
+          activeKey = key;
+        }
+      });
+      return value.delete(activeKey);
+    }).then(
+      (value) => initDeals(),
+    );
 
-    emit(state.copyWith(deals: allDeals));
-  }
-
-  void deleteDeal(int id) {
     final List<Deal> newState =
         state.deals.where((element) => element.id != id).toList();
     emit(state.copyWith(deals: newState));

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'main_cubit.dart';
+part of 'main_settings.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,28 +15,28 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$MainCubitState {
+mixin _$MainSettings {
   ImageProvider<Object>? get avatar => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MainCubitStateCopyWith<MainCubitState> get copyWith =>
+  $MainSettingsCopyWith<MainSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MainCubitStateCopyWith<$Res> {
-  factory $MainCubitStateCopyWith(
-          MainCubitState value, $Res Function(MainCubitState) then) =
-      _$MainCubitStateCopyWithImpl<$Res, MainCubitState>;
+abstract class $MainSettingsCopyWith<$Res> {
+  factory $MainSettingsCopyWith(
+          MainSettings value, $Res Function(MainSettings) then) =
+      _$MainSettingsCopyWithImpl<$Res, MainSettings>;
   @useResult
   $Res call({ImageProvider<Object>? avatar, bool isDarkMode});
 }
 
 /// @nodoc
-class _$MainCubitStateCopyWithImpl<$Res, $Val extends MainCubitState>
-    implements $MainCubitStateCopyWith<$Res> {
-  _$MainCubitStateCopyWithImpl(this._value, this._then);
+class _$MainSettingsCopyWithImpl<$Res, $Val extends MainSettings>
+    implements $MainSettingsCopyWith<$Res> {
+  _$MainSettingsCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -63,22 +63,22 @@ class _$MainCubitStateCopyWithImpl<$Res, $Val extends MainCubitState>
 }
 
 /// @nodoc
-abstract class _$$_MainCubitStateCopyWith<$Res>
-    implements $MainCubitStateCopyWith<$Res> {
-  factory _$$_MainCubitStateCopyWith(
-          _$_MainCubitState value, $Res Function(_$_MainCubitState) then) =
-      __$$_MainCubitStateCopyWithImpl<$Res>;
+abstract class _$$_MainSettingsCopyWith<$Res>
+    implements $MainSettingsCopyWith<$Res> {
+  factory _$$_MainSettingsCopyWith(
+          _$_MainSettings value, $Res Function(_$_MainSettings) then) =
+      __$$_MainSettingsCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ImageProvider<Object>? avatar, bool isDarkMode});
 }
 
 /// @nodoc
-class __$$_MainCubitStateCopyWithImpl<$Res>
-    extends _$MainCubitStateCopyWithImpl<$Res, _$_MainCubitState>
-    implements _$$_MainCubitStateCopyWith<$Res> {
-  __$$_MainCubitStateCopyWithImpl(
-      _$_MainCubitState _value, $Res Function(_$_MainCubitState) _then)
+class __$$_MainSettingsCopyWithImpl<$Res>
+    extends _$MainSettingsCopyWithImpl<$Res, _$_MainSettings>
+    implements _$$_MainSettingsCopyWith<$Res> {
+  __$$_MainSettingsCopyWithImpl(
+      _$_MainSettings _value, $Res Function(_$_MainSettings) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_MainCubitStateCopyWithImpl<$Res>
     Object? avatar = freezed,
     Object? isDarkMode = null,
   }) {
-    return _then(_$_MainCubitState(
+    return _then(_$_MainSettings(
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -102,8 +102,8 @@ class __$$_MainCubitStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_MainCubitState implements _MainCubitState {
-  const _$_MainCubitState({this.avatar, this.isDarkMode = false});
+class _$_MainSettings implements _MainSettings {
+  const _$_MainSettings({this.avatar, this.isDarkMode = false});
 
   @override
   final ImageProvider<Object>? avatar;
@@ -113,14 +113,14 @@ class _$_MainCubitState implements _MainCubitState {
 
   @override
   String toString() {
-    return 'MainCubitState(avatar: $avatar, isDarkMode: $isDarkMode)';
+    return 'MainSettings(avatar: $avatar, isDarkMode: $isDarkMode)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MainCubitState &&
+            other is _$_MainSettings &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.isDarkMode, isDarkMode) ||
                 other.isDarkMode == isDarkMode));
@@ -132,14 +132,14 @@ class _$_MainCubitState implements _MainCubitState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MainCubitStateCopyWith<_$_MainCubitState> get copyWith =>
-      __$$_MainCubitStateCopyWithImpl<_$_MainCubitState>(this, _$identity);
+  _$$_MainSettingsCopyWith<_$_MainSettings> get copyWith =>
+      __$$_MainSettingsCopyWithImpl<_$_MainSettings>(this, _$identity);
 }
 
-abstract class _MainCubitState implements MainCubitState {
-  const factory _MainCubitState(
+abstract class _MainSettings implements MainSettings {
+  const factory _MainSettings(
       {final ImageProvider<Object>? avatar,
-      final bool isDarkMode}) = _$_MainCubitState;
+      final bool isDarkMode}) = _$_MainSettings;
 
   @override
   ImageProvider<Object>? get avatar;
@@ -147,6 +147,6 @@ abstract class _MainCubitState implements MainCubitState {
   bool get isDarkMode;
   @override
   @JsonKey(ignore: true)
-  _$$_MainCubitStateCopyWith<_$_MainCubitState> get copyWith =>
+  _$$_MainSettingsCopyWith<_$_MainSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }

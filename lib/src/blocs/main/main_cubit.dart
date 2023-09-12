@@ -11,12 +11,11 @@ part 'main_cubit.freezed.dart';
 class MainCubit extends Cubit<MainCubitState> {
   MainCubit()
       : super(const MainCubitState(
-          isSwitched: false,
           avatar: AssetImage('assets/images/defaultPerson.jpg'),
         ));
 
   void changeTheme(bool value) {
-    emit(state.copyWith(isSwitched: value));
+    emit(state.copyWith(isDarkMode: value));
   }
 
   Future getAvatar() async {

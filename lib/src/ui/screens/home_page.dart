@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_assistant/src/feature/deals/presentation/screen/deals_screen.dart';
+import 'package:investment_assistant/src/feature/deals/presentation/state/deals_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/rates/presentation/screens/rates_screen.dart';
+import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/screen/settings.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +22,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    context.read<RatesCubit>().initRates();
+    context.read<DealsCubit>().initDeals();
     super.initState();
   _selectedTab = widget.selectedTab;
   }

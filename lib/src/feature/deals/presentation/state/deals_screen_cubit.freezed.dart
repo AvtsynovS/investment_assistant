@@ -92,10 +92,11 @@ class __$$_DealsCubitStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_DealsCubitState implements _DealsCubitState {
-  _$_DealsCubitState({required final List<Deal> deals}) : _deals = deals;
+  _$_DealsCubitState({final List<Deal> deals = const []}) : _deals = deals;
 
   final List<Deal> _deals;
   @override
+  @JsonKey()
   List<Deal> get deals {
     if (_deals is EqualUnmodifiableListView) return _deals;
     // ignore: implicit_dynamic_type
@@ -127,8 +128,7 @@ class _$_DealsCubitState implements _DealsCubitState {
 }
 
 abstract class _DealsCubitState implements DealsCubitState {
-  factory _DealsCubitState({required final List<Deal> deals}) =
-      _$_DealsCubitState;
+  factory _DealsCubitState({final List<Deal> deals}) = _$_DealsCubitState;
 
   @override
   List<Deal> get deals;

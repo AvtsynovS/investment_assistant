@@ -47,7 +47,6 @@ class DealsScreen extends StatelessWidget {
               itemCount: dealsCount,
               itemBuilder: (context, index) {
                 var deal = initialDeals[index];
-                // TODO подумать над сортировкой сделок. Если сделка завершена, ее необходимо переместить в конец списка.
                 return DealScreen(
                   deal: deal,
                 );

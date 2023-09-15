@@ -34,6 +34,12 @@ class CustomTheme {
         return primaryLightColor.withOpacity(.48);
       }),
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.lighterGrey),
+      ),
+      fillColor: AppColors.disabledLightThemeColor,
+    ),
     dropdownMenuTheme: DropdownMenuThemeData(
       textStyle: const TextStyle(color: Colors.red),
       menuStyle: MenuStyle(
@@ -51,6 +57,12 @@ class CustomTheme {
             return SystemMouseCursors.click;
           },
         ),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.lighterGrey),
+        ),
+        fillColor: AppColors.disabledLightThemeColor,
       ),
     ),
     iconTheme: const IconThemeData(
@@ -128,6 +140,12 @@ class CustomTheme {
         return primaryLightColor.withOpacity(.48);
       }),
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.lighterGrey),
+      ),
+      fillColor: AppColors.disabledDarkThemeColor,
+    ),
     dropdownMenuTheme: DropdownMenuThemeData(
       textStyle: const TextStyle(color: Colors.red),
       menuStyle: MenuStyle(
@@ -145,6 +163,12 @@ class CustomTheme {
             return SystemMouseCursors.click;
           },
         ),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.lighterGrey),
+        ),
+        fillColor: AppColors.disabledDarkThemeColor,
       ),
     ),
     iconTheme: const IconThemeData(

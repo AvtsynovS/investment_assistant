@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
 
 import '../../../../ui/widgets/my_form_field.dart';
@@ -133,6 +134,8 @@ class _AddDealState extends State<AddDeal> {
                                 assetsType: _selectedType,
                                 buy: double.parse(_buyController.text),
                                 quantity: int.parse(_quantityController.text),
+                                createAt:
+                                    DateFormat('MM.dd.yyyy').format(DateTime.now()),
                                 status: true);
                             context.read<DealsCubit>().addDeal(deal);
                             Navigator.pushNamed(context, '/');

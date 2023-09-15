@@ -67,5 +67,7 @@
     "rateErrorDescription": "Please select an active tariff",
     "rateTitleError": "Please enter the name of the tariff",
     "transactionCommissionRateTitle": "Commission for deal",
-    "transactionCommissionRateError": "Please enter the transaction fee"
+    "transactionCommissionRateError": "Please enter the transaction fee",
+
+    "historyEmptyText": "The history of closed transactions will be displayed here"
 }

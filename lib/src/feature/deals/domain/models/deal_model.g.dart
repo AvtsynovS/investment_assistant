@@ -22,13 +22,13 @@ class DealAdapter extends TypeAdapter<Deal> {
       assetsType: fields[2] as String,
       buy: fields[3] as double,
       quantity: fields[4] as int,
-      status: fields[11] as bool,
       createAt: fields[5] as String?,
-      finishDate: fields[6] as String?,
-      profit: fields[9] as double?,
-      profitPersent: fields[10] as double?,
+      closeAt: fields[6] as String?,
       additinalProfit: fields[7] as double?,
       sell: fields[8] as double?,
+      profit: fields[9] as double?,
+      profitPersent: fields[10] as double?,
+      status: fields[11] as bool,
     );
   }
 
@@ -49,7 +49,7 @@ class DealAdapter extends TypeAdapter<Deal> {
       ..writeByte(5)
       ..write(obj.createAt)
       ..writeByte(6)
-      ..write(obj.finishDate)
+      ..write(obj.closeAt)
       ..writeByte(7)
       ..write(obj.additinalProfit)
       ..writeByte(8)

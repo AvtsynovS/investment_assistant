@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
+import 'package:investment_assistant/src/feature/history/presentation/state/history_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
+import 'package:investment_assistant/src/helpers/get_profit.dart';
 import 'package:investment_assistant/src/ui/screens/home_page.dart';
 
 import '../../../../ui/widgets/my_form_field.dart';
@@ -78,6 +80,8 @@ class _UpdateDealState extends State<UpdateDeal> {
   Widget build(BuildContext context) {
     return BlocBuilder<DealsCubit, DealsCubitState>(builder: (context, state) {
       final rates = context.read<RatesCubit>().state.rates;
+      final historyCubit = context.read<HistoryCubit>();
+      final dealsCubit = context.read<DealsCubit>();
       return Scaffold(
         body: SafeArea(
           child: Form(
@@ -195,6 +199,7 @@ class _UpdateDealState extends State<UpdateDeal> {
                             assetsType: _selectedType,
                             buy: double.parse(_buyController.text),
                             quantity: int.parse(_quantityController.text),
+                            createAt: widget.deal.createAt,
                             sell: _sellController.text != ''
                                 ? double.parse(_sellController.text)
                                 : null,
@@ -211,21 +216,22 @@ class _UpdateDealState extends State<UpdateDeal> {
                           if (_formKey.currentState!.validate() &&
                               _sellController.text != '' &&
                               activeRate == null) {
-                            context.read<DealsCubit>().updateDeal(deal);
+                            dealsCubit.updateDeal(deal);
                             _showActiveRateError(context);
                           }
                           if (_formKey.currentState!.validate() &&
                               _sellController.text == '' &&
                               activeRate == null) {
-                            context.read<DealsCubit>().updateDeal(deal);
+                            dealsCubit.updateDeal(deal);
                             Navigator.pushNamed(context, '/');
                           }
 
                           if (_formKey.currentState!.validate() &&
                               activeRate != null) {
-                            context
-                                .read<DealsCubit>()
-                                .updateDealBySell(deal, activeRate);
+                            final updateDeal = getProfit(deal, activeRate);
+                            dealsCubit.updateDealBySell(updateDeal);
+
+                            historyCubit.updateHistory(updateDeal);
                             Navigator.pushNamed(context, '/');
                           }
                         },

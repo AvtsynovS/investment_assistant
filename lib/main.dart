@@ -4,7 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
+import 'package:investment_assistant/src/feature/history/presentation/state/history_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/rates/domain/models/rate_model.dart';
+import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
 import 'package:provider/provider.dart';
 
 import 'package:investment_assistant/src/feature/deals/presentation/state/deals_screen_cubit.dart';
@@ -15,9 +17,17 @@ import 'package:investment_assistant/src/ui/screens/home_page.dart';
 
 import 'src/blocs/main/main_cubit.dart';
 import 'src/feature/deals/presentation/widgets/add_deal.dart';
-import 'src/feature/rates/presentation/state/rates_screen_cubit.dart';
 import 'src/localizations/l10n/all_locales.dart';
 import 'src/localizations/locale_provider.dart';
+
+// TODO подумать как обработать данные, в случае закрытия части позиции.
+// Логика:
+// 1. Ищем нужную сделку
+// 2. Проверяем, если количество меньше чем было изначально в сделке и сделка закрывается - создаем отдельную закрытую сделку с указанным количеством. 
+// При этом остатотк остается открытым.
+
+// Или добавить отдельное поле "Продано, шт." и далее та же логика.
+// В таком случае, нужна доп. проверка, если сделка закрывается, "Продано, шт." и "цена продажи" должно быть обязательно заполнено.
 
 void main() async {
   Hive.registerAdapter(DealAdapter());
@@ -53,6 +63,9 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocProvider(
                 create: (BuildContext context) => RatesCubit(),
+              ),
+              BlocProvider(
+                create: (BuildContext context) => HistoryCubit(),
               ),
             ],
             child: BlocBuilder<MainCubit, MainCubitState>(

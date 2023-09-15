@@ -5,19 +5,23 @@ class MyFormField extends StatelessWidget {
   const MyFormField({
     Key? key,
     required this.fieldTitle,
-    required this.myController,
+    this.myController,
     this.validation,
     this.typeField,
     this.autofocus,
     this.hintText,
+    this.enabled,
+    this.filled,
   }) : super(key: key);
 
-  final TextEditingController myController;
+  final TextEditingController? myController;
   final String? Function(String?)? validation;
   final String fieldTitle;
   final TextInputType? typeField;
   final String? hintText;
   final bool? autofocus;
+  final bool? enabled;
+  final bool? filled;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class MyFormField extends StatelessWidget {
       return TextFormField(
         controller: myController,
         autofocus: autofocus ?? false,
+        enabled: enabled ?? true,
         keyboardType: typeField,
         inputFormatters: fieldTitle == 'Quantity'
             ? <TextInputFormatter>[
@@ -39,6 +44,7 @@ class MyFormField extends StatelessWidget {
           labelText: fieldTitle,
           hintText: hintText,
           border: const OutlineInputBorder(),
+          filled: filled ?? false,
         ),
         validator: validation,
       );
@@ -46,6 +52,7 @@ class MyFormField extends StatelessWidget {
 
     return TextFormField(
       controller: myController,
+      enabled: enabled ?? true,
       keyboardType: typeField,
       inputFormatters: <TextInputFormatter>[
         LengthLimitingTextInputFormatter(10),
@@ -54,6 +61,7 @@ class MyFormField extends StatelessWidget {
         labelText: fieldTitle,
         hintText: hintText,
         border: const OutlineInputBorder(),
+        filled: filled ?? false,
       ),
       validator: validation,
     );

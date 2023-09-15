@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
-import 'package:investment_assistant/src/feature/deals/presentation/state/deals_screen_cubit.dart';
-import 'package:investment_assistant/src/feature/deals/presentation/widgets/update_deal.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:investment_assistant/src/feature/history/presentation/widgets/update_close_deal.dart';
 import 'package:investment_assistant/src/themes/theme.dart';
 
-class DealScreen extends StatelessWidget {
-  const DealScreen({required this.deal, super.key});
+class CloseDealScreen extends StatelessWidget {
+  const CloseDealScreen({required this.closeDeal, super.key});
 
-  final Deal deal;
+  final Deal closeDeal;
 
   @override
   Widget build(BuildContext context) {
@@ -20,30 +16,10 @@ class DealScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return UpdateDeal(deal: deal);
+            return UpdateCloseDeal(closeDeal: closeDeal);
           }),
         );
       },
-      onLongPress: () => showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.deleteDealTitle),
-          content: Text(AppLocalizations.of(context)!.deleteDealDescription),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: Text(AppLocalizations.of(context)!.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<DealsCubit>().deleteDeal(deal.id);
-                Navigator.pop(context, 'OK');
-              },
-              child: Text(AppLocalizations.of(context)!.ok),
-            ),
-          ],
-        ),
-      ),
       child: Container(
         width: double.infinity,
         height: 120,
@@ -64,11 +40,11 @@ class DealScreen extends StatelessWidget {
               children: [
                 RichText(
                     text: TextSpan(
-                  text: '${deal.assetsTitle} ',
+                  text: '${closeDeal.assetsTitle} ',
                   style: Theme.of(context).textTheme.titleLarge,
                   children: [
                     TextSpan(
-                      text: deal.assetsType == 'stock'
+                      text: closeDeal.assetsType == 'stock'
                           ? AppLocalizations.of(context)!.stock
                           : AppLocalizations.of(context)!.pound,
                       style: Theme.of(context).textTheme.bodySmall,
@@ -83,7 +59,7 @@ class DealScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       children: [
                         TextSpan(
-                          text: '${deal.quantity}',
+                          text: '${closeDeal.quantity}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.profitColor,
@@ -98,14 +74,14 @@ class DealScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 6.0, 0, 8.0),
                   child: RichText(
                     text: TextSpan(
-                        text: deal.assetsType == 'stock'
+                        text: closeDeal.assetsType == 'stock'
                             ? AppLocalizations.of(context)!.dividends
                             : AppLocalizations.of(context)!.coupons,
                         style: Theme.of(context).textTheme.bodySmall,
                         children: [
                           TextSpan(
-                            text: deal.additinalProfit != null
-                                ? ' ${deal.additinalProfit}'
+                            text: closeDeal.additinalProfit != null
+                                ? ' ${closeDeal.additinalProfit}'
                                 : '',
                             style:
                                 Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -117,23 +93,24 @@ class DealScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 200.0,
+                  width: 180.0,
                   child: RichText(
                     maxLines: 2,
                     text: TextSpan(
                       text:
                           '${AppLocalizations.of(context)!.yield}, ${AppLocalizations.of(context)!.rub}:  ',
                       style: Theme.of(context).textTheme.bodyMedium,
-                      children: deal.profit != null
+                      children: closeDeal.profit != null
                           ? [
                               TextSpan(
-                                text: deal.profit?.toStringAsFixed(2) ?? '',
+                                text:
+                                    closeDeal.profit?.toStringAsFixed(2) ?? '',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      color: (deal.profit != null &&
-                                              deal.profit!.isNegative)
+                                      color: (closeDeal.profit != null &&
+                                              closeDeal.profit!.isNegative)
                                           ? AppColors.lesionColor
                                           : AppColors.profitColor,
                                       fontWeight: FontWeight.bold,
@@ -154,9 +131,9 @@ class DealScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(
-                        deal.closeAt != null
-                            ? '${deal.createAt} - ${deal.closeAt}'
-                            : '${deal.createAt}',
+                        closeDeal.closeAt != null
+                            ? '${closeDeal.createAt} - ${closeDeal.closeAt}'
+                            : '${closeDeal.createAt}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 12,
@@ -168,7 +145,7 @@ class DealScreen extends StatelessWidget {
                       child: Icon(
                         Icons.circle,
                         size: 10.0,
-                        color: deal.status
+                        color: closeDeal.status
                             ? AppColors.activeColor
                             : AppColors.deactiveColor,
                       ),
@@ -183,7 +160,7 @@ class DealScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       children: [
                         TextSpan(
-                          text: '${deal.buy}',
+                          text: '${closeDeal.buy}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.profitColor,
@@ -206,7 +183,7 @@ class DealScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       children: [
                         TextSpan(
-                          text: deal.sell?.toString() ?? '',
+                          text: closeDeal.sell?.toString() ?? '',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.profitColor,
@@ -224,24 +201,23 @@ class DealScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
-                    // width: 200.0,
                     child: RichText(
                       maxLines: 2,
                       text: TextSpan(
                         text: '${AppLocalizations.of(context)!.yield}, %:  ',
                         style: Theme.of(context).textTheme.bodyMedium,
-                        children: deal.profit != null
+                        children: closeDeal.profit != null
                             ? [
                                 TextSpan(
-                                  text:
-                                      deal.profitPersent?.toStringAsFixed(2) ??
-                                          '',
+                                  text: closeDeal.profitPersent
+                                          ?.toStringAsFixed(2) ??
+                                      '',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                        color: (deal.profit != null &&
-                                                deal.profit!.isNegative)
+                                        color: (closeDeal.profit != null &&
+                                                closeDeal.profit!.isNegative)
                                             ? AppColors.lesionColor
                                             : AppColors.profitColor,
                                         fontWeight: FontWeight.bold,

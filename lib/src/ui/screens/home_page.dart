@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_assistant/src/feature/deals/presentation/screen/deals_screen.dart';
 import 'package:investment_assistant/src/feature/deals/presentation/state/deals_screen_cubit.dart';
+import 'package:investment_assistant/src/feature/history/presentation/screens/history_screen.dart';
+import 'package:investment_assistant/src/feature/history/presentation/state/history_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/rates/presentation/screens/rates_screen.dart';
 import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/screen/settings.dart';
@@ -24,6 +26,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     context.read<RatesCubit>().initRates();
     context.read<DealsCubit>().initDeals();
+    context.read<HistoryCubit>().initHistory();
     super.initState();
   _selectedTab = widget.selectedTab;
   }
@@ -40,7 +43,7 @@ class HomePageState extends State<HomePage> {
     ),
     Container(
       alignment: Alignment.center,
-      child: const Text('History page widget'),
+      child: const HistoryScreen(),
     ),
     Container(
       alignment: Alignment.center,
@@ -50,6 +53,7 @@ class HomePageState extends State<HomePage> {
 
   _changeTab(int index) {
     setState(() {
+      // context.read<HistoryCubit>().initHistory();
       _selectedTab = index;
     });
   }

@@ -18,12 +18,12 @@ class Deal with _$Deal {
   required String assetsType,
   required double buy,
   required int quantity,
-  @Default(true) bool status,
   String? createAt,
-  String? finishDate,
+  String? closeAt,
   double? additinalProfit,
   double? sell,
   double? profit,
   String? profitPersent,
+  @Default(true) bool status,
   }) = _Deal;
 }

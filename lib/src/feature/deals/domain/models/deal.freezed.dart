@@ -21,13 +21,13 @@ mixin _$Deal {
   String get assetsType => throw _privateConstructorUsedError;
   double get buy => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
-  bool get status => throw _privateConstructorUsedError;
   String? get createAt => throw _privateConstructorUsedError;
-  String? get finishDate => throw _privateConstructorUsedError;
+  String? get closeAt => throw _privateConstructorUsedError;
   double? get additinalProfit => throw _privateConstructorUsedError;
   double? get sell => throw _privateConstructorUsedError;
   double? get profit => throw _privateConstructorUsedError;
   String? get profitPersent => throw _privateConstructorUsedError;
+  bool get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DealCopyWith<Deal> get copyWith => throw _privateConstructorUsedError;
@@ -44,13 +44,13 @@ abstract class $DealCopyWith<$Res> {
       String assetsType,
       double buy,
       int quantity,
-      bool status,
       String? createAt,
-      String? finishDate,
+      String? closeAt,
       double? additinalProfit,
       double? sell,
       double? profit,
-      String? profitPersent});
+      String? profitPersent,
+      bool status});
 }
 
 /// @nodoc
@@ -71,13 +71,13 @@ class _$DealCopyWithImpl<$Res, $Val extends Deal>
     Object? assetsType = null,
     Object? buy = null,
     Object? quantity = null,
-    Object? status = null,
     Object? createAt = freezed,
-    Object? finishDate = freezed,
+    Object? closeAt = freezed,
     Object? additinalProfit = freezed,
     Object? sell = freezed,
     Object? profit = freezed,
     Object? profitPersent = freezed,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -100,17 +100,13 @@ class _$DealCopyWithImpl<$Res, $Val extends Deal>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
       createAt: freezed == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      finishDate: freezed == finishDate
-          ? _value.finishDate
-          : finishDate // ignore: cast_nullable_to_non_nullable
+      closeAt: freezed == closeAt
+          ? _value.closeAt
+          : closeAt // ignore: cast_nullable_to_non_nullable
               as String?,
       additinalProfit: freezed == additinalProfit
           ? _value.additinalProfit
@@ -128,6 +124,10 @@ class _$DealCopyWithImpl<$Res, $Val extends Deal>
           ? _value.profitPersent
           : profitPersent // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -144,13 +144,13 @@ abstract class _$$_DealCopyWith<$Res> implements $DealCopyWith<$Res> {
       String assetsType,
       double buy,
       int quantity,
-      bool status,
       String? createAt,
-      String? finishDate,
+      String? closeAt,
       double? additinalProfit,
       double? sell,
       double? profit,
-      String? profitPersent});
+      String? profitPersent,
+      bool status});
 }
 
 /// @nodoc
@@ -167,13 +167,13 @@ class __$$_DealCopyWithImpl<$Res> extends _$DealCopyWithImpl<$Res, _$_Deal>
     Object? assetsType = null,
     Object? buy = null,
     Object? quantity = null,
-    Object? status = null,
     Object? createAt = freezed,
-    Object? finishDate = freezed,
+    Object? closeAt = freezed,
     Object? additinalProfit = freezed,
     Object? sell = freezed,
     Object? profit = freezed,
     Object? profitPersent = freezed,
+    Object? status = null,
   }) {
     return _then(_$_Deal(
       id: null == id
@@ -196,17 +196,13 @@ class __$$_DealCopyWithImpl<$Res> extends _$DealCopyWithImpl<$Res, _$_Deal>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
       createAt: freezed == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      finishDate: freezed == finishDate
-          ? _value.finishDate
-          : finishDate // ignore: cast_nullable_to_non_nullable
+      closeAt: freezed == closeAt
+          ? _value.closeAt
+          : closeAt // ignore: cast_nullable_to_non_nullable
               as String?,
       additinalProfit: freezed == additinalProfit
           ? _value.additinalProfit
@@ -224,6 +220,10 @@ class __$$_DealCopyWithImpl<$Res> extends _$DealCopyWithImpl<$Res, _$_Deal>
           ? _value.profitPersent
           : profitPersent // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -237,13 +237,13 @@ class _$_Deal implements _Deal {
       required this.assetsType,
       required this.buy,
       required this.quantity,
-      this.status = true,
       this.createAt,
-      this.finishDate,
+      this.closeAt,
       this.additinalProfit,
       this.sell,
       this.profit,
-      this.profitPersent});
+      this.profitPersent,
+      this.status = true});
 
   @override
   final int id;
@@ -256,12 +256,9 @@ class _$_Deal implements _Deal {
   @override
   final int quantity;
   @override
-  @JsonKey()
-  final bool status;
-  @override
   final String? createAt;
   @override
-  final String? finishDate;
+  final String? closeAt;
   @override
   final double? additinalProfit;
   @override
@@ -270,10 +267,13 @@ class _$_Deal implements _Deal {
   final double? profit;
   @override
   final String? profitPersent;
+  @override
+  @JsonKey()
+  final bool status;
 
   @override
   String toString() {
-    return 'Deal(id: $id, assetsTitle: $assetsTitle, assetsType: $assetsType, buy: $buy, quantity: $quantity, status: $status, createAt: $createAt, finishDate: $finishDate, additinalProfit: $additinalProfit, sell: $sell, profit: $profit, profitPersent: $profitPersent)';
+    return 'Deal(id: $id, assetsTitle: $assetsTitle, assetsType: $assetsType, buy: $buy, quantity: $quantity, createAt: $createAt, closeAt: $closeAt, additinalProfit: $additinalProfit, sell: $sell, profit: $profit, profitPersent: $profitPersent, status: $status)';
   }
 
   @override
@@ -289,17 +289,16 @@ class _$_Deal implements _Deal {
             (identical(other.buy, buy) || other.buy == buy) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
-            (identical(other.status, status) || other.status == status) &&
             (identical(other.createAt, createAt) ||
                 other.createAt == createAt) &&
-            (identical(other.finishDate, finishDate) ||
-                other.finishDate == finishDate) &&
+            (identical(other.closeAt, closeAt) || other.closeAt == closeAt) &&
             (identical(other.additinalProfit, additinalProfit) ||
                 other.additinalProfit == additinalProfit) &&
             (identical(other.sell, sell) || other.sell == sell) &&
             (identical(other.profit, profit) || other.profit == profit) &&
             (identical(other.profitPersent, profitPersent) ||
-                other.profitPersent == profitPersent));
+                other.profitPersent == profitPersent) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
@@ -310,13 +309,13 @@ class _$_Deal implements _Deal {
       assetsType,
       buy,
       quantity,
-      status,
       createAt,
-      finishDate,
+      closeAt,
       additinalProfit,
       sell,
       profit,
-      profitPersent);
+      profitPersent,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -332,13 +331,13 @@ abstract class _Deal implements Deal {
       required final String assetsType,
       required final double buy,
       required final int quantity,
-      final bool status,
       final String? createAt,
-      final String? finishDate,
+      final String? closeAt,
       final double? additinalProfit,
       final double? sell,
       final double? profit,
-      final String? profitPersent}) = _$_Deal;
+      final String? profitPersent,
+      final bool status}) = _$_Deal;
 
   @override
   int get id;
@@ -351,11 +350,9 @@ abstract class _Deal implements Deal {
   @override
   int get quantity;
   @override
-  bool get status;
-  @override
   String? get createAt;
   @override
-  String? get finishDate;
+  String? get closeAt;
   @override
   double? get additinalProfit;
   @override
@@ -364,6 +361,8 @@ abstract class _Deal implements Deal {
   double? get profit;
   @override
   String? get profitPersent;
+  @override
+  bool get status;
   @override
   @JsonKey(ignore: true)
   _$$_DealCopyWith<_$_Deal> get copyWith => throw _privateConstructorUsedError;

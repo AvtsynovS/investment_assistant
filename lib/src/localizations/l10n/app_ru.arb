@@ -41,7 +41,7 @@
     "coupons": "Купоны",
     "titleDeal": "Название сделки",
     "typeDeal": "Тип сделки",
-    "yield": "Доходность",
+    "yield": "Прибыль",
     "dividendsSum": "Введите сумму дивидендов",
     "couponsSum": "Введите сумму купонов",
     "sellTitle": "Цена продажи",
@@ -67,5 +67,7 @@
     "rateErrorDescription": "Пожалуйста выберите активный тариф",
     "rateTitleError": "Пожалуйста введите название тарифа",
     "transactionCommissionRateTitle": "Комиссия за сделку",
-    "transactionCommissionRateError": "Пожалуйста введите комиссию за сделку"
+    "transactionCommissionRateError": "Пожалуйста введите комиссию за сделку",
+
+    "historyEmptyText": "Здесь будет отображаться история по закрытым сделкам"
 }

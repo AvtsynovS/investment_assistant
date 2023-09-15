@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
-import 'package:investment_assistant/src/feature/rates/domain/models/rate_model.dart';
 
 part 'deals_screen_state.dart';
 part 'deals_screen_cubit.freezed.dart';
@@ -18,11 +17,12 @@ class DealsCubit extends Cubit<DealsCubitState> {
     return state;
   }
 
+  String dealsBoxTitle = 'deals';
   List<Deal> allDeals = [];
   List<int>? keys = [];
 
   initDeals() async {
-    var box = await Hive.openBox<Deal>('deals');
+    var box = await Hive.openBox<Deal>(dealsBoxTitle);
     keys = [];
     keys = box.keys.cast<int>().toList();
     allDeals = [];
@@ -38,13 +38,13 @@ class DealsCubit extends Cubit<DealsCubitState> {
   }
 
   void addDeal(Deal deal) async {
-    await Hive.openBox<Deal>('deals')
+    await Hive.openBox<Deal>(dealsBoxTitle)
         .then((deals) => deals.put(deal.id, deal))
         .then((value) => initDeals());
   }
 
   void updateDeal(Deal deal) async {
-    await Hive.openBox<Deal>('deals').then((value) {
+    await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
       final Map<dynamic, Deal> dealsMap = value.toMap();
       dynamic activeKey;
       dealsMap.forEach((key, value) {
@@ -65,69 +65,50 @@ class DealsCubit extends Cubit<DealsCubitState> {
     emit(state.copyWith(deals: allDeals));
   }
 
-  void updateDealBySell(Deal deal, Rate activeRate) async {
+  void updateDealBySell(Deal deal) async {
     List<Deal> allDeals = List.from(state.deals);
     final index = allDeals.indexWhere((element) => element.id == deal.id);
 
-    double rusTax(double prof) {
-      return prof / 100 * 13;
-    }
-
     if (deal.sell != null) {
-      final double brokerComissionForSell =
-          deal.sell! / 100 * activeRate.transactionCommission;
-      final double brokerComissionForBuy =
-          deal.buy / 100 * activeRate.transactionCommission;
-      final double income = deal.sell! -
-          deal.buy -
-          brokerComissionForBuy -
-          brokerComissionForSell;
-      final double yieldWithoutTax = income > 0 ? income - rusTax(income) : 0;
+      await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+        final Map<dynamic, Deal> dealsMap = value.toMap();
+        dynamic activeKey;
+        dealsMap.forEach((key, value) {
+          if (value.id == deal.id) {
+            activeKey = key;
+          }
+        });
+        return value.delete(activeKey);
+      }).then(
+        (value) => initDeals(),
+      );
+    } else {
+      await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+        final Map<dynamic, Deal> dealsMap = value.toMap();
+        dynamic activeKey;
+        dealsMap.forEach((key, value) {
+          if (value.id == deal.id) {
+            activeKey = key;
+          }
+        });
+        return value.put(activeKey, deal);
+      }).then(
+        (value) => initDeals(),
+      );
 
-      final double additinalProfitWithoutTax =
-          deal.additinalProfit ?? 0 - rusTax(deal.additinalProfit ?? 0);
-
-      final double profit = income < 0 ? income : yieldWithoutTax;
-      final double yieldProfitPersent = income < 0
-          ? ((additinalProfitWithoutTax + deal.sell!) /
-                      (deal.buy +
-                          brokerComissionForBuy +
-                          brokerComissionForSell) -
-                  1) *
-              100
-          : ((additinalProfitWithoutTax + deal.sell!) /
-                      (deal.buy +
-                          brokerComissionForBuy +
-                          brokerComissionForSell +
-                          rusTax(income)) -
-                  1) *
-              100;
-
-      deal.status = false;
-      deal.profit = additinalProfitWithoutTax + profit * deal.quantity;
-      deal.profitPersent = yieldProfitPersent;
+      allDeals[index] = deal;
+      emit(state.copyWith(deals: allDeals));
     }
+  }
 
-    await Hive.openBox<Deal>('deals').then((value) {
-      final Map<dynamic, Deal> dealsMap = value.toMap();
-      dynamic activeKey;
-      dealsMap.forEach((key, value) {
-        if (value.id == deal.id) {
-          activeKey = key;
-        }
-      });
-      return value.put(activeKey, deal);
-    }).then(
-      (value) => initDeals(),
-    );
-
-    allDeals[index] = deal;
-
-    emit(state.copyWith(deals: allDeals));
+  void restoreDeal(Deal deal) async {
+    if (deal.sell == null) {
+      addDeal(deal);
+    }
   }
 
   void deleteDeal(int id) async {
-    await Hive.openBox<Deal>('deals').then((value) {
+    await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
       final Map<dynamic, Deal> dealsMap = value.toMap();
       dynamic activeKey;
       dealsMap.forEach((key, value) {

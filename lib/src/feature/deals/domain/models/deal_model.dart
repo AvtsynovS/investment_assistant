@@ -22,7 +22,7 @@ class Deal {
   @HiveField(5)
   final String? createAt;
   @HiveField(6)
-  final String? finishDate;
+  String? closeAt;
   @HiveField(7)
   final double? additinalProfit;
   @HiveField(8)
@@ -40,12 +40,12 @@ class Deal {
     required this.assetsType,
     required this.buy,
     required this.quantity,
-    this.status = true,
     this.createAt,
-    this.finishDate,
-    this.profit,
-    this.profitPersent,
+    this.closeAt,
     this.additinalProfit,
     this.sell,
+    this.profit,
+    this.profitPersent,
+    this.status = true,
   });
 }

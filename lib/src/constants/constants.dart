@@ -10,6 +10,9 @@ const String defaultFont = '';
 const String titleFont = '';
 
 // Dark Theme Colors
+abstract class DarkThemeColors {
+  static const Color appBarBackground = Color(0xFF393838);
+}
 const Color primaryDarkColor = Color(0xFFE3B50B);
 const Color secondaryDarkColor = Color(0xFF06BF28); // потом исправить цвет
 const Color tertiaryDarkContainer = Color.fromARGB(67, 45, 35, 2);
@@ -91,5 +94,4 @@ abstract class AppColors {
   static const Color activeColor = Color(0xFF07CF25);
   static const Color disabledLightThemeColor = Color(0xFFE8E7E7);
   static const Color disabledDarkThemeColor = Color(0xFF3D3D3D);
-
 }

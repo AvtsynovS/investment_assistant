@@ -28,13 +28,12 @@ class HomePageState extends State<HomePage> {
     context.read<DealsCubit>().initDeals();
     context.read<HistoryCubit>().initHistory();
     super.initState();
-  _selectedTab = widget.selectedTab;
+    _selectedTab = widget.selectedTab;
   }
 
   final List _pages = [
     Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.only(top: 10.0),
       child: const DealsScreen(),
     ),
     Container(
@@ -53,7 +52,6 @@ class HomePageState extends State<HomePage> {
 
   _changeTab(int index) {
     setState(() {
-      // context.read<HistoryCubit>().initHistory();
       _selectedTab = index;
     });
   }

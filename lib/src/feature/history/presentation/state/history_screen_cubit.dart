@@ -56,4 +56,20 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
       }).then((value) => initHistory());
     }
   }
+
+    void searchCloseDeals(String query) async {
+    List<Deal> closeDealsList = [];
+    await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
+      closeDeals.toMap().forEach((key, value) => closeDealsList.add(value));
+    });
+
+    final suggestions = closeDealsList.where((deal) {
+      final closeDealTitle = deal.assetsTitle.toLowerCase();
+      final input = query.toLowerCase();
+
+      return closeDealTitle.contains(input);
+    }).toList();
+
+    emit(state.copyWith(closeDeals: suggestions));
+  }
 }

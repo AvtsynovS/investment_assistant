@@ -125,4 +125,24 @@ class DealsCubit extends Cubit<DealsCubitState> {
         state.deals.where((element) => element.id != id).toList();
     emit(state.copyWith(deals: newState));
   }
+
+  void searchDeals(String query) async {
+    List<Deal> dealsList = [];
+    await Hive.openBox<Deal>(dealsBoxTitle).then((deals) {
+      deals.toMap().forEach((key, value) => dealsList.add(value));
+    });
+
+    final suggestions = dealsList.where((deal) {
+      final dealTitle = deal.assetsTitle.toLowerCase();
+      final input = query.toLowerCase();
+
+      return dealTitle.contains(input);
+    }).toList();
+
+    if (query.isEmpty) {
+      emit(state.copyWith(deals: dealsList));
+    } else {
+      emit(state.copyWith(deals: suggestions));
+    }
+  }
 }

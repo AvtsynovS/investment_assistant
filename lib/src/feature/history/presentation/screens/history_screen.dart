@@ -7,22 +7,41 @@ import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.
 import 'package:investment_assistant/src/feature/history/presentation/state/history_screen_cubit.dart';
 
 import 'package:investment_assistant/src/feature/history/presentation/screens/close_deal_screen.dart';
+import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({
     super.key,
   });
 
   @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  final _searchController = TextEditingController();
+  
+  @override
+  void initState() {
+    context.read<HistoryCubit>().initHistory();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<HistoryCubit, HistoryCubitState>(
       builder: (context, state) {
-        final closeDealsCount =
-            context.read<HistoryCubit>().initState().closeDeals.length;
-        final initialCloseDeals =
-            context.read<HistoryCubit>().initState().closeDeals;
+        final closeDealsCubit = context.read<HistoryCubit>();
+        final closeDealsCount = closeDealsCubit.initState().closeDeals.length;
+        final initialCloseDeals = closeDealsCubit.initState().closeDeals;
 
-        if (closeDealsCount == 0) {
+        if (closeDealsCount == 0 && _searchController.text == '') {
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
@@ -39,29 +58,43 @@ class HistoryScreen extends StatelessWidget {
           // TODO Настроить тему для AppBar
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 57, 56, 56),
+            leading: SearchTextField(
+              searchController: _searchController,
+              searchFunction: closeDealsCubit.searchCloseDeals,
+              hintText: AppLocalizations.of(context)!.searchHistoryPlaceholder,
+            ),
+            leadingWidth: 200,
             actions: [
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                     side: const BorderSide(style: BorderStyle.none)),
                 onPressed: () {},
                 // onPressed: () => Navigator.pushNamed(context, '/addDeal'),
-                child: const Text('Добавить фильтр по имени и периоду'),
+                // TODO добавить виджет фильтрации по имени и периоду
+                child: const Text('фильтр'),
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: ListView.builder(
-              itemCount: closeDealsCount,
-              itemBuilder: (context, index) {
-                Deal closeDeal = initialCloseDeals[index];
-                return CloseDealScreen(
-                  closeDeal: closeDeal,
-                );
-              },
-            ),
-          ),
+          body: (closeDealsCount != 0)
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: ListView.builder(
+                    itemCount: closeDealsCount,
+                    itemBuilder: (context, index) {
+                      Deal closeDeal = initialCloseDeals[index];
+                      return CloseDealScreen(
+                        closeDeal: closeDeal,
+                      );
+                    },
+                  ),
+                )
+              : Center(
+                  child: SizedBox(
+                    child:
+                        Text(AppLocalizations.of(context)!.emptySearchHistory),
+                  ),
+                ),
         );
       },
     );

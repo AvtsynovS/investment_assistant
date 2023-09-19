@@ -26,6 +26,8 @@
     "dealTitlePlaceholder": "Enter your deal title",
     "dealPricePlaceholder": "Enter price deal",
     "dealQuantityPlaceholder": "Enter quantity",
+    "searchDealPlaceholder": "Search deal...",
+    "emptySearchDeal": "No deals found",
     "firstDealTitleBtn": "Make your first deal!",
     "addDealTitleBtn": "Add new deal",
     "updateDealTitleBtn": "Update deal",
@@ -52,6 +54,8 @@
 
     "rateTitlePlaceholder": "Enter the name of the tariff",
     "transactionCommissionPlaceholder": "Enter commission per trade",
+    "searchRatePlaceholder": "Search rate...",
+    "emptySearchRate": "No rates found",
     "firstRateTitleBtn": "Create your first rate!",
     "addRateTitleBtn": "Add new tariff",
     "updateRateTitleBtn": "Update tariff",
@@ -69,5 +73,7 @@
     "transactionCommissionRateTitle": "Commission for deal",
     "transactionCommissionRateError": "Please enter the transaction fee",
 
-    "historyEmptyText": "The history of closed transactions will be displayed here"
+    "historyEmptyText": "The history of closed transactions will be displayed here",
+    "searchHistoryPlaceholder": "Search deal...",
+    "emptySearchHistory": "No deals found"
 }

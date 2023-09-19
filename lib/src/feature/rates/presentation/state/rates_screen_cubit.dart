@@ -15,11 +15,12 @@ class RatesCubit extends Cubit<RatesCubitState> {
     return state;
   }
 
+    String ratesBoxTitle = 'rates';
   List<Rate> rates = [];
   List<int>? keys = [];
 
   initRates() async {
-    var box = await Hive.openBox<Rate>('rates');
+    var box = await Hive.openBox<Rate>(ratesBoxTitle);
     keys = [];
     keys = box.keys.cast<int>().toList();
     rates = [];
@@ -35,7 +36,7 @@ class RatesCubit extends Cubit<RatesCubitState> {
   }
 
   void addRate(Rate rate) async {
-    Box<Rate> allRates = await Hive.openBox<Rate>('rates');
+    Box<Rate> allRates = await Hive.openBox<Rate>(ratesBoxTitle);
     final Map<dynamic, Rate> ratesMap = allRates.toMap();
     dynamic activeKey;
     dynamic changeRate;
@@ -68,7 +69,7 @@ class RatesCubit extends Cubit<RatesCubitState> {
     final index = allRates.indexWhere((element) => element.id == rate.id);
     allRates[index] = rate;
 
-    await Hive.openBox<Rate>('rates').then((value) {
+    await Hive.openBox<Rate>(ratesBoxTitle).then((value) {
       final Map<dynamic, Rate> ratesMap = value.toMap();
 
       for (final element in allRates) {
@@ -83,7 +84,7 @@ class RatesCubit extends Cubit<RatesCubitState> {
   }
 
   void deleteRate(int id) async {
-    await Hive.openBox<Rate>('rates').then((value) {
+    await Hive.openBox<Rate>(ratesBoxTitle).then((value) {
       final Map<dynamic, Rate> ratesMap = value.toMap();
       dynamic activeKey;
       ratesMap.forEach((key, value) {
@@ -99,5 +100,21 @@ class RatesCubit extends Cubit<RatesCubitState> {
     final List<Rate> newState =
         state.rates.where((element) => element.id != id).toList();
     emit(state.copyWith(rates: newState));
+  }
+
+  void searchRates(String query) async {
+    List<Rate> ratesList = [];
+    await Hive.openBox<Rate>(ratesBoxTitle).then((rates) {
+      rates.toMap().forEach((key, value) => ratesList.add(value));
+    });
+
+    final suggestions = ratesList.where((rate) {
+      final rateTitle = rate.rateTitle.toLowerCase();
+      final input = query.toLowerCase();
+
+      return rateTitle.contains(input);
+    }).toList();
+
+    emit(state.copyWith(rates: suggestions));
   }
 }

@@ -26,6 +26,8 @@
     "dealTitlePlaceholder": "Введите название актива",
     "dealPricePlaceholder": "Введите цену актива",
     "dealQuantityPlaceholder": "Введите количество",
+    "searchDealPlaceholder": "Поиск сделки...",
+    "emptySearchDeal": "Ни одной сделки не найдено",
     "firstDealTitleBtn": "Создайте свою первую сделку!",
     "addDealTitleBtn": "Добавить новую сделку",
     "updateDealTitleBtn": "Обновить сделку",
@@ -52,6 +54,8 @@
 
     "rateTitlePlaceholder": "Введите название тарифа",
     "transactionCommissionPlaceholder": "Введите комиссию за сделку",
+    "searchRatePlaceholder": "Поиск тарифа...",
+    "emptySearchRate": "Ни одного тарифа не найдено",
     "firstRateTitleBtn": "Создайте свой первый тариф!",
     "addRateTitleBtn": "Добавить новый тариф",
     "updateRateTitleBtn": "Обновить тариф",
@@ -69,5 +73,7 @@
     "transactionCommissionRateTitle": "Комиссия за сделку",
     "transactionCommissionRateError": "Пожалуйста введите комиссию за сделку",
 
-    "historyEmptyText": "Здесь будет отображаться история по закрытым сделкам"
+    "historyEmptyText": "Здесь будет отображаться история по закрытым сделкам",
+    "searchHistoryPlaceholder": "Поиск сделки...",
+    "emptySearchHistory": "Ни одной сделки не найдено"
 }

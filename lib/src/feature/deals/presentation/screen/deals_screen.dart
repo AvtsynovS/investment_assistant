@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_assistant/src/feature/deals/presentation/state/deals_screen_cubit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:investment_assistant/src/helpers/date_helpers.dart';
+import 'package:investment_assistant/src/themes/theme.dart';
 import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
 import '../widgets/deal.dart';
@@ -18,6 +20,32 @@ class DealsScreen extends StatefulWidget {
 
 class _DealsScreenState extends State<DealsScreen> {
   final _searchController = TextEditingController();
+
+  List<String> selectedDays = [];
+
+  DateTimeRange dateRange = DateTimeRange(
+    start: DateTime.now(),
+    end: (DateTime.now()),
+  );
+  
+  Future pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: dateRange,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (newDateRange == null) return;
+
+    setState(() {
+      selectedDays = DateHelpers.getDaysInBetween(
+        newDateRange.start,
+        newDateRange.end,
+      );
+      dateRange = newDateRange;
+    });
+  }
 
   @override
   void initState() {
@@ -39,15 +67,6 @@ class _DealsScreenState extends State<DealsScreen> {
         final dealsCount = dealsCubit.initState().deals.length;
         final initialDeals = dealsCubit.initState().deals;
 
-        if (dealsCount == 0 && _searchController.text == '') {
-          return SizedBox(
-            child: OutlinedButton(
-              onPressed: () => Navigator.pushNamed(context, '/addDeal'),
-              child: Text(AppLocalizations.of(context)!.firstDealTitleBtn),
-            ),
-          );
-        }
-
         return Scaffold(
           // TODO Настроить тему для AppBar
           appBar: AppBar(
@@ -60,11 +79,19 @@ class _DealsScreenState extends State<DealsScreen> {
             ),
             leadingWidth: 200,
             actions: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(style: BorderStyle.none)),
+              IconButton(
                 onPressed: () => Navigator.pushNamed(context, '/addDeal'),
-                child: Text(AppLocalizations.of(context)!.addDealTitleBtn),
+                icon: const Icon(Icons.add_circle_outline,
+                    color: DarkThemeColors.primaryDarkColor),
+              ),
+              IconButton(
+                padding: const EdgeInsets.only(right: 15),
+                onPressed: () async {
+                  await pickDateRange();
+                  dealsCubit.filterForDateRange(selectedDays);
+                },
+                icon: const Icon(Icons.filter_list,
+                    color: DarkThemeColors.primaryDarkColor),
               ),
             ],
           ),

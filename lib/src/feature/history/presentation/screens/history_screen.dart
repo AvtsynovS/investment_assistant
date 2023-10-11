@@ -7,6 +7,8 @@ import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.
 import 'package:investment_assistant/src/feature/history/presentation/state/history_screen_cubit.dart';
 
 import 'package:investment_assistant/src/feature/history/presentation/screens/close_deal_screen.dart';
+import 'package:investment_assistant/src/helpers/date_helpers.dart';
+import 'package:investment_assistant/src/themes/theme.dart';
 import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -20,7 +22,32 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   final _searchController = TextEditingController();
-  
+  List<String> selectedDays = [];
+
+  DateTimeRange dateRange = DateTimeRange(
+    start: DateTime.now(),
+    end: (DateTime.now()),
+  );
+
+  Future pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: dateRange,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (newDateRange == null) return;
+
+    setState(() {
+      selectedDays = DateHelpers.getDaysInBetween(
+        newDateRange.start,
+        newDateRange.end,
+      );
+      dateRange = newDateRange;
+    });
+  }
+
   @override
   void initState() {
     context.read<HistoryCubit>().initHistory();
@@ -41,19 +68,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         final closeDealsCount = closeDealsCubit.initState().closeDeals.length;
         final initialCloseDeals = closeDealsCubit.initState().closeDeals;
 
-        if (closeDealsCount == 0 && _searchController.text == '') {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox(
-              child: Text(
-                AppLocalizations.of(context)!.historyEmptyText,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          );
-        }
-
         return Scaffold(
           // TODO Настроить тему для AppBar
           appBar: AppBar(
@@ -66,13 +80,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
             leadingWidth: 200,
             actions: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(style: BorderStyle.none)),
-                onPressed: () {},
-                // onPressed: () => Navigator.pushNamed(context, '/addDeal'),
-                // TODO добавить виджет фильтрации по имени и периоду
-                child: const Text('фильтр'),
+              IconButton(
+                padding: const EdgeInsets.only(right: 15),
+                onPressed: () async {
+                  await pickDateRange();
+                  closeDealsCubit.filterForDateRange(selectedDays);
+                },
+                icon: const Icon(Icons.filter_list,
+                    color: DarkThemeColors.primaryDarkColor),
               ),
             ],
           ),

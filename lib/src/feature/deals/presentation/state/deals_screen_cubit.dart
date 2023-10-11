@@ -145,4 +145,16 @@ class DealsCubit extends Cubit<DealsCubitState> {
       emit(state.copyWith(deals: suggestions));
     }
   }
+
+    void filterForDateRange(List<String> dateRange) async {
+    List<Deal> filterCloseDeals = [];
+    await Hive.openBox<Deal>(dealsBoxTitle).then((closeDeals) {
+      closeDeals.toMap().forEach((key, value) {
+        if (dateRange.contains(value.createAt)) {
+          filterCloseDeals.add(value);
+        }
+      });
+    });
+    emit(state.copyWith(deals: filterCloseDeals));
+  }
 }

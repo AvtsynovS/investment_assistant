@@ -135,7 +135,7 @@ class _AddDealState extends State<AddDeal> {
                                 buy: double.parse(_buyController.text),
                                 quantity: int.parse(_quantityController.text),
                                 createAt:
-                                    DateFormat('MM.dd.yyyy').format(DateTime.now()),
+                                    DateFormat('dd.MM.yyyy').format(DateTime.now()),
                                 status: true);
                             context.read<DealsCubit>().addDeal(deal);
                             Navigator.pushNamed(context, '/');

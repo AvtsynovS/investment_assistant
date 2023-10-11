@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:investment_assistant/src/feature/rates/presentation/state/rates_screen_cubit.dart';
+import 'package:investment_assistant/src/themes/theme.dart';
 import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
 import 'rate_screen.dart';
@@ -60,11 +61,11 @@ class _RatesScreenState extends State<RatesScreen> {
             ),
             leadingWidth: 200,
             actions: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(style: BorderStyle.none)),
+              IconButton(
+                padding: const EdgeInsets.only(right: 15),
                 onPressed: () => Navigator.pushNamed(context, '/addRate'),
-                child: Text(AppLocalizations.of(context)!.addRateTitleBtn),
+                icon: const Icon(Icons.add_circle_outline,
+                    color: DarkThemeColors.primaryDarkColor),
               ),
             ],
           ),

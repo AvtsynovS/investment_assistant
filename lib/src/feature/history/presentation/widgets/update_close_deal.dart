@@ -124,10 +124,13 @@ class _UpdateCloseDealState extends State<UpdateCloseDeal> {
                       child: ElevatedButton(
                         onPressed: () {
                           Deal deal = widget.closeDeal;
-                          deal.sell = _sellController.text != ''
-                              ? double.parse(_sellController.text)
-                              : null;
-
+                          if (_sellController.text == '') {
+                            deal.sell = null;
+                            deal.profitPersent = null;
+                            deal.profit = null;
+                            deal.status = true;
+                            deal.closeAt = null;
+                          }
                           closeDeals.restoreCloseDeal(deal);
                           dealsCubit.restoreDeal(deal);
                           Navigator.push(

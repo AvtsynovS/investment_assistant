@@ -57,7 +57,7 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
     }
   }
 
-    void searchCloseDeals(String query) async {
+  void searchCloseDeals(String query) async {
     List<Deal> closeDealsList = [];
     await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
       closeDeals.toMap().forEach((key, value) => closeDealsList.add(value));
@@ -71,5 +71,17 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
     }).toList();
 
     emit(state.copyWith(closeDeals: suggestions));
+  }
+
+  void filterForDateRange(List<String> dateRange) async {
+    List<Deal> filterCloseDeals = [];
+    await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
+      closeDeals.toMap().forEach((key, value) {
+        if (dateRange.contains(value.closeAt)) {
+          filterCloseDeals.add(value);
+        }
+      });
+    });
+    emit(state.copyWith(closeDeals: filterCloseDeals));
   }
 }

@@ -38,7 +38,7 @@ Deal getProfit(Deal deal, Rate activeRate) {
     deal.status = false;
     deal.profit = additinalProfitWithoutTax + profit * deal.quantity;
     deal.profitPersent = yieldProfitPersent;
-    deal.closeAt = DateFormat('MM.dd.yyyy').format(DateTime.now());
+    deal.closeAt = DateFormat('dd.MM.yyyy').format(DateTime.now());
 
     return deal;
   } else {

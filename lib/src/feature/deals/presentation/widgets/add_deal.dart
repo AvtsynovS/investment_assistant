@@ -138,7 +138,7 @@ class _AddDealState extends State<AddDeal> {
                                     DateFormat('dd.MM.yyyy').format(DateTime.now()),
                                 status: true);
                             context.read<DealsCubit>().addDeal(deal);
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/homePage');
                           }
                         },
                         child:

@@ -1,4 +1,17 @@
 {
+    "welcomeTitle": "Добро пожаловать в Инвестиционный помощник",
+    "welcomeBody": "Пожалуйста, войдите в свою учетную запись или создайте новую, чтобы продолжить",
+
+    "loginUserNamePlaceholder": "Введите свое имя",
+    "loginPasswordPlaceholder": "Введите пароль",
+    "loginConfirmPasswordPlaceholder": "Подтвердите ваш пароль",
+    "loginMessage": "Нет аккаутна?",
+    "registrationMessage": "Уже есть аккаунт?",
+    "loginMessageError": "Неверный логин или пароль",
+    "loginUserNameErrorMessage": "Пожалуйста введите имя",
+    "loginPasswordErrorMessage": "Пожалуйста введите пароль",
+    "confirmPasswordErrorMessage": "Неверный пароль",
+
     "mainTitle": "Инвестиционный помощник",
 
     "dealsTitle": "Сделки",
@@ -20,8 +33,15 @@
     "changePassword": "Сменить пароль",
     "changeRate": "Сменить тариф",
 
+    "login": "Логин",
+    "userNameFieldLabel": "Имя",
+    "passwordFieldLabel": "Пароль",
+    "confirmPasswordFieldLabel": "Подтвердите пароль",
+    "createAccount": "Создать аккаутн",
+    "registration": "Реристрация",
     "cancel": "Отмена",
     "ok": "ОК",
+    "edit": "Редактировать",
 
     "dealTitlePlaceholder": "Введите название актива",
     "dealPricePlaceholder": "Введите цену актива",
@@ -61,6 +81,8 @@
     "updateRateTitleBtn": "Обновить тариф",
     "deleteRateTitle": "Удалить тариф",
     "deleteRateDescription": "Вы уверены, что хотите удалить тариф?",
+    "changeRateTitle": "Сменить тариф",
+    "changeRateDescription": "Сделать этот тариф активным?",
     "rateTitle": "Название тарифа",
     "commission": "Комиссия",
     "activateRate": "Активировать тариф",
@@ -75,5 +97,25 @@
 
     "historyEmptyText": "Здесь будет отображаться история по закрытым сделкам",
     "searchHistoryPlaceholder": "Поиск сделки...",
-    "emptySearchHistory": "Ни одной сделки не найдено"
+    "emptySearchHistory": "Ни одной сделки не найдено",
+    
+    "changePasswordPageTitle": "Смена пароля",
+    "oldPasswordFieldTitle": "Введите старый пароль", 
+    "oldPasswordFieldPlaceholder": "Введите старый пароль",
+    "newPasswordFieldTitle": "Введите новый пароль", 
+    "newPasswordFieldPlaceholder": "Введите новый пароль",
+    "confirmPasswordFieldTitle": "Подтвержите пароль", 
+    "confirmPasswordFieldPlaceholder": "Подтвержите пароль",
+    "requiredFieldError": "Поле обязательно для заполнения",
+    "changeCurrentPasswordError": "Текущий пароль не подходит",
+    "changeSamePasswordError": "Старый и новый пароль совпадают",
+    "changeConfirmPasswordError": "Пароль не совпадает",
+
+    "changeLoginPageTitle": "Смена логина",
+    "oldLoginFieldTitle": "Введите старый логин",
+    "oldLoginFieldPlaceholder": "Введите старый логин",
+    "newLoginFieldTitle": "Введите новый логин",
+    "newLoginFieldPlaceholder": "Введите новый логин",
+    "changeSameLoginError": "Старый и новый логин совпадают",
+    "changeCurrentLoginError": "Текущий логин не подходит"
 }

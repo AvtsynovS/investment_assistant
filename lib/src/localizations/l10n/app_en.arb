@@ -1,4 +1,17 @@
 {
+    "welcomeTitle": "Welcome to Investment assistant",
+    "welcomeBody": "Please login to your account or create new account to continue",
+
+    "loginUserNamePlaceholder": "Enter your User name",
+    "loginPasswordPlaceholder": "Enter your password",
+    "loginConfirmPasswordPlaceholder": "Confirm your Password",
+    "loginMessage": "Don`t have an account?",
+    "registrationMessage": "Already have an account?",
+    "loginMessageError": "Wrong login or password",
+    "loginUserNameErrorMessage": "Please enter your Username",
+    "loginPasswordErrorMessage": "Please enter your password",
+    "confirmPasswordErrorMessage": "Wrong password",
+    
     "mainTitle": "Investment Assistant",
 
     "dealsTitle": "Deals",
@@ -20,8 +33,15 @@
     "changePassword": "Change password",
     "changeRate": "Change rate",
 
+    "login": "Login",
+    "userNameFieldLabel": "User name",
+    "passwordFieldLabel": "Password",
+    "confirmPasswordFieldLabel": "Confirm Password",
+    "createAccount": "Create account",
+    "registration": "Registration",
     "cancel": "Cancel",
     "ok": "OK",
+    "edit": "Edit",
 
     "dealTitlePlaceholder": "Enter your deal title",
     "dealPricePlaceholder": "Enter price deal",
@@ -61,6 +81,8 @@
     "updateRateTitleBtn": "Update tariff",
     "deleteRateTitle": "Delete tariff",
     "deleteRateDescription": "Are you sure you want to remove the tariff?",
+    "changeRateTitle": "Сменить тариф",
+    "changeRateDescription": "Сделать этот тариф активным?",
     "rateTitle": "Tariff name",
     "commission": "Commission",
     "activateRate": "Activate rate",
@@ -75,5 +97,25 @@
 
     "historyEmptyText": "The history of closed transactions will be displayed here",
     "searchHistoryPlaceholder": "Search deal...",
-    "emptySearchHistory": "No deals found"
+    "emptySearchHistory": "No deals found",
+
+    "changePasswordPageTitle": "Change Password",
+    "oldPasswordFieldTitle": "Enter old password", 
+    "oldPasswordFieldPlaceholder": "Enter old password",
+    "newPasswordFieldTitle": "Enter new password", 
+    "newPasswordFieldPlaceholder": "Enter new password",
+    "confirmPasswordFieldTitle": "Confirm password", 
+    "confirmPasswordFieldPlaceholder": "Confirm password",
+    "requiredFieldError": "Requared field",
+    "changeCurrentPasswordError": "he current password is not suitable",
+    "changeSamePasswordError": "The old and new passwords are the same",
+    "changeConfirmPasswordError": "Password doesn't match",
+
+    "changeLoginPageTitle": "Change Login",
+    "oldLoginFieldTitle": "Enter old login",
+    "oldLoginFieldPlaceholder": "Enter old login",
+    "newLoginFieldTitle": "Enter new login",
+    "newLoginFieldPlaceholder": "Enter new login",
+    "changeSameLoginError": "Old and new login are the same",
+    "changeCurrentLoginError": "he current login is not suitable"
 }

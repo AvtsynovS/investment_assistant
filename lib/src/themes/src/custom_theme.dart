@@ -11,9 +11,6 @@ class CustomTheme {
     ),
     listTileTheme: const ListTileThemeData(
       tileColor: tileLightColor,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(30.0),
-      // ),
       horizontalTitleGap: 20.0,
     ),
     fontFamily: 'Roboto',
@@ -83,6 +80,7 @@ class CustomTheme {
       secondary: secondaryLightColor,
       background: backgroundLightColor,
       tertiaryContainer: tertiaryLightContainer,
+      
     ),
     splashColor: splashLightColor,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -94,13 +92,14 @@ class CustomTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: backgroundLightColor,
       foregroundColor: foregroundLightColor,
+      iconTheme: IconThemeData(
+        color: primaryLightColor,
+      ),
     ),
     textTheme: TextTheme(
       headlineMedium: headlineMedium.copyWith(color: foregroundLightColor),
       headlineSmall: headlineSmall.copyWith(color: primaryLightColor),
-      // Отвечает за текст в NavigationBar
       labelSmall: labelSmall,
-      // Отвечает за обычный шрифт в приложении
       bodyMedium: bodyMedium,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -117,9 +116,6 @@ class CustomTheme {
     ),
     listTileTheme: const ListTileThemeData(
       tileColor: tileDarkColor,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(30.0),
-      // ),
       horizontalTitleGap: 20.0,
     ),
     fontFamily: 'Roboto',
@@ -200,6 +196,9 @@ class CustomTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: backgroundDarkColor,
       foregroundColor: foregroundDarkColor,
+      iconTheme: IconThemeData(
+        color: primaryDarkColor,
+      ),
     ),
     textTheme: TextTheme(
       headlineMedium: headlineMedium.copyWith(color: foregroundDarkColor),

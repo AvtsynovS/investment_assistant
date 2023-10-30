@@ -8,7 +8,6 @@ import 'package:investment_assistant/src/feature/history/presentation/state/hist
 
 import 'package:investment_assistant/src/feature/history/presentation/screens/close_deal_screen.dart';
 import 'package:investment_assistant/src/helpers/date_helpers.dart';
-import 'package:investment_assistant/src/themes/theme.dart';
 import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -69,10 +68,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
         final initialCloseDeals = closeDealsCubit.initState().closeDeals;
 
         return Scaffold(
-          // TODO Настроить тему для AppBar
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: const Color.fromARGB(255, 57, 56, 56),
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
             leading: SearchTextField(
               searchController: _searchController,
               searchFunction: closeDealsCubit.searchCloseDeals,
@@ -86,8 +84,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   await pickDateRange();
                   closeDealsCubit.filterForDateRange(selectedDays);
                 },
-                icon: const Icon(Icons.filter_list,
-                    color: DarkThemeColors.primaryDarkColor),
+                icon: const Icon(Icons.filter_list),
               ),
             ],
           ),

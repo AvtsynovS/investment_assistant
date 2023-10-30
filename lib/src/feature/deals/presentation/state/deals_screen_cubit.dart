@@ -11,10 +11,7 @@ part 'deals_screen_state.dart';
 part 'deals_screen_cubit.freezed.dart';
 
 class DealsCubit extends Cubit<DealsCubitState> {
-  // ### Задаем начальное состояние стейта ###
   DealsCubit() : super(DealsCubitState(deals: []));
-  // ### Или принимаем начальное состояние из вне ###
-  // DealsCubit(deals) : super(deals);
 
   DealsCubitState initState() {
     emit(state);
@@ -47,7 +44,6 @@ class DealsCubit extends Cubit<DealsCubitState> {
       }
     }
 
-    // box.close();
     emit(state.copyWith(deals: allDeals));
   }
 

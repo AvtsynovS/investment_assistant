@@ -224,7 +224,6 @@ class DealScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
-                    // width: 200.0,
                     child: RichText(
                       maxLines: 2,
                       text: TextSpan(

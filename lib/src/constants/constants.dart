@@ -14,21 +14,25 @@ abstract class DarkThemeColors {
   static const Color appBarBackground = Color(0xFF393838);
   static const Color primaryDarkColor = Color(0xFFE3B50B);
 }
+
+abstract class LightThemeColors {
+  static const Color appBarBackground = Color.fromARGB(79, 233, 233, 233);
+  static const Color primaryLightColor = Color(0xFF8D12AB);
+}
+
 const Color primaryDarkColor = Color(0xFFE3B50B);
-const Color secondaryDarkColor = Color(0xFF06BF28); // потом исправить цвет
+const Color secondaryDarkColor = Color(0xFF06BF28);
 const Color tertiaryDarkContainer = Color.fromARGB(67, 45, 35, 2);
 const Color backgroundDialogDarkColor = Color(0xFF4A4747);
 const Color foregroundDarkColor = Color(0xFF4A4747);
 const Color backgroundDarkColor = Color(0xFFE3B50B);
-const Color primaryBackgroundDarkColor =
-    Color(0x7CE3B40B); // потом исправить цвет
-const Color shadowDarkColor = Color(0xFF000000); // потом исправить цвет
+const Color primaryBackgroundDarkColor = Color(0x7CE3B40B);
+const Color shadowDarkColor = Color(0xFF000000);
 const Color tileDarkColor = Color(0xFF424242);
 const Color splashDarkColor = Color.fromARGB(255, 197, 225, 14);
 const Color checkedDarkColor = Color(0xFF000000);
 const Color checkboxBackgroundDarkColor = primaryDarkColor;
 
-// Light Theme Colors ПЕРЕДЕЛАТЬ
 const Color primaryLightColor = Color(0xFF8D12AB);
 const Color secondaryLightColor = Color(0xFF3DA565);
 const Color secondaryBackgroundLightColor = Color(0xBC4E3915);

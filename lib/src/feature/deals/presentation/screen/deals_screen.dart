@@ -4,7 +4,6 @@ import 'package:investment_assistant/src/feature/deals/presentation/state/deals_
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:investment_assistant/src/helpers/date_helpers.dart';
-import 'package:investment_assistant/src/themes/theme.dart';
 import 'package:investment_assistant/src/ui/widgets/search_text_field.dart';
 
 import '../widgets/deal.dart';
@@ -27,7 +26,7 @@ class _DealsScreenState extends State<DealsScreen> {
     start: DateTime.now(),
     end: (DateTime.now()),
   );
-  
+
   Future pickDateRange() async {
     DateTimeRange? newDateRange = await showDateRangePicker(
       context: context,
@@ -67,11 +66,19 @@ class _DealsScreenState extends State<DealsScreen> {
         final dealsCount = dealsCubit.initState().deals.length;
         final initialDeals = dealsCubit.initState().deals;
 
+        if (dealsCount == 0 && _searchController.text == '') {
+          return SizedBox(
+            child: OutlinedButton(
+              onPressed: () => Navigator.pushNamed(context, '/addDeal'),
+              child: Text(AppLocalizations.of(context)!.firstDealTitleBtn),
+            ),
+          );
+        }
+
         return Scaffold(
-          // TODO Настроить тему для AppBar
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: const Color.fromARGB(255, 57, 56, 56),
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
             leading: SearchTextField(
               searchController: _searchController,
               searchFunction: dealsCubit.searchDeals,
@@ -81,8 +88,7 @@ class _DealsScreenState extends State<DealsScreen> {
             actions: [
               IconButton(
                 onPressed: () => Navigator.pushNamed(context, '/addDeal'),
-                icon: const Icon(Icons.add_circle_outline,
-                    color: DarkThemeColors.primaryDarkColor),
+                icon: const Icon(Icons.add_circle_outline),
               ),
               IconButton(
                 padding: const EdgeInsets.only(right: 15),
@@ -90,8 +96,7 @@ class _DealsScreenState extends State<DealsScreen> {
                   await pickDateRange();
                   dealsCubit.filterForDateRange(selectedDays);
                 },
-                icon: const Icon(Icons.filter_list,
-                    color: DarkThemeColors.primaryDarkColor),
+                icon: const Icon(Icons.filter_list),
               ),
             ],
           ),

@@ -66,7 +66,6 @@ class SettingsState extends State<Settings> {
                             },
                           ),
                         ),
-                        // Theme
                         ListTile(
                           tileColor: Colors.transparent,
                           title: Text(

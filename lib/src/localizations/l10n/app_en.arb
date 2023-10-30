@@ -42,6 +42,9 @@
     "cancel": "Cancel",
     "ok": "OK",
     "edit": "Edit",
+    "yes": "Yes",
+    "no": "No",
+    "exitModalMessage": "Do you really want to go out?",
 
     "dealTitlePlaceholder": "Enter your deal title",
     "dealPricePlaceholder": "Enter price deal",

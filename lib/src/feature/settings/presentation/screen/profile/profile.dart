@@ -38,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return Scaffold(
                   appBar: AppBar(
                     leading: IconButton(
+                      color: Theme.of(context).appBarTheme.foregroundColor,
                       icon: const Icon(
                         Icons.keyboard_arrow_left,
                       ),

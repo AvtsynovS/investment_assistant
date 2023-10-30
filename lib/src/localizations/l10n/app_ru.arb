@@ -42,6 +42,9 @@
     "cancel": "Отмена",
     "ok": "ОК",
     "edit": "Редактировать",
+    "yes": "Да",
+    "no": "Нет",
+    "exitModalMessage": "Вы точно хотите выйти?",
 
     "dealTitlePlaceholder": "Введите название актива",
     "dealPricePlaceholder": "Введите цену актива",

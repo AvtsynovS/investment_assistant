@@ -44,7 +44,6 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
       }
     }
 
-    // box.close();
     emit(state.copyWith(closeDeals: allCloseDeals));
   }
 

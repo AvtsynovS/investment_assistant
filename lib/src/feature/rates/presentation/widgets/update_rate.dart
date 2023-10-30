@@ -49,7 +49,6 @@ class _UpdateRateState extends State<UpdateRate> {
     super.dispose();
   }
 
-  // TODO Доработать верстку, шрифты в теме и т.п.
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RatesCubit, RatesCubitState>(builder: (context, state) {

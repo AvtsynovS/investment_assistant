@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ExitModal extends StatefulWidget {
   const ExitModal({
     super.key,
@@ -20,18 +22,19 @@ class _ExitModalState extends State<ExitModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: const Text('Вы точно хотите выйти?'),
+      content: Text(AppLocalizations.of(context)!.exitModalMessage),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.pop(context, 'Нет'),
-          child: const Text('Нет'),
+          onPressed: () =>
+              Navigator.pop(context, AppLocalizations.of(context)!.no),
+          child: Text(AppLocalizations.of(context)!.no),
         ),
         TextButton(
           onPressed: () {
             Hive.close();
             _exitApp();
           },
-          child: const Text('Да'),
+          child: Text(AppLocalizations.of(context)!.yes),
         ),
       ],
     );

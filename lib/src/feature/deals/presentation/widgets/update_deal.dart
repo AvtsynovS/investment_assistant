@@ -223,7 +223,7 @@ class _UpdateDealState extends State<UpdateDeal> {
                               _sellController.text == '' &&
                               activeRate == null) {
                             dealsCubit.updateDeal(deal);
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/homePage');
                           }
 
                           if (_formKey.currentState!.validate() &&
@@ -232,7 +232,7 @@ class _UpdateDealState extends State<UpdateDeal> {
                             dealsCubit.updateDealBySell(updateDeal);
 
                             historyCubit.updateHistory(updateDeal);
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/homePage');
                           }
                         },
                         child: Text(

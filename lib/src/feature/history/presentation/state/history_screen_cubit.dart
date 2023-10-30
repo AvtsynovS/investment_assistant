@@ -1,13 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
+import 'package:investment_assistant/src/helpers/SecureStorag/storage_keys.dart';
 
 part 'history_screen_state.dart';
 part 'history_screen_cubit.freezed.dart';
 
 class HistoryCubit extends Cubit<HistoryCubitState> {
   HistoryCubit() : super(HistoryCubitState(closeDeals: []));
+
+  getSecureKey() async {
+    const secureStorage = FlutterSecureStorage();
+    final key = await secureStorage.read(key: StorageKeys.boxKey);
+    final encryptionKeyUint8List = base64Url.decode(key!);
+
+    return encryptionKeyUint8List;
+  }
 
   HistoryCubitState initState() {
     emit(state);
@@ -19,7 +31,9 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
   List<int>? keys = [];
 
   initHistory() async {
-    var box = await Hive.openBox<Deal>(historyBoxTitle);
+    final encryptionKeyUint8List = await getSecureKey();
+    var box = await Hive.openBox<Deal>(historyBoxTitle,
+        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
     keys = [];
     keys = box.keys.cast<int>().toList();
     allCloseDeals = [];
@@ -30,21 +44,26 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
       }
     }
 
-    box.close();
+    // box.close();
     emit(state.copyWith(closeDeals: allCloseDeals));
   }
 
   void updateHistory(Deal deal) async {
+    final encryptionKeyUint8List = await getSecureKey();
     if (deal.sell != null) {
-      await Hive.openBox<Deal>(historyBoxTitle)
+      await Hive.openBox<Deal>(historyBoxTitle,
+              encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
           .then((closeDeals) => closeDeals.put(deal.id, deal))
           .then((value) => initHistory());
     }
   }
 
   void restoreCloseDeal(Deal deal) async {
+    final encryptionKeyUint8List = await getSecureKey();
     if (deal.sell == null) {
-      await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
+      await Hive.openBox<Deal>(historyBoxTitle,
+              encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+          .then((closeDeals) {
         final Map<dynamic, Deal> closeDealsMap = closeDeals.toMap();
         dynamic activeKey;
         closeDealsMap.forEach((key, value) {
@@ -59,7 +78,10 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
 
   void searchCloseDeals(String query) async {
     List<Deal> closeDealsList = [];
-    await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
+    final encryptionKeyUint8List = await getSecureKey();
+    await Hive.openBox<Deal>(historyBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((closeDeals) {
       closeDeals.toMap().forEach((key, value) => closeDealsList.add(value));
     });
 
@@ -75,7 +97,10 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
 
   void filterForDateRange(List<String> dateRange) async {
     List<Deal> filterCloseDeals = [];
-    await Hive.openBox<Deal>(historyBoxTitle).then((closeDeals) {
+    final encryptionKeyUint8List = await getSecureKey();
+    await Hive.openBox<Deal>(historyBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((closeDeals) {
       closeDeals.toMap().forEach((key, value) {
         if (dateRange.contains(value.closeAt)) {
           filterCloseDeals.add(value);

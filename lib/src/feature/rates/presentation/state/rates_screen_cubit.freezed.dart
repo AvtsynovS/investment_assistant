@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RatesCubitState {
   List<Rate> get rates => throw _privateConstructorUsedError;
+  Rate? get currentRate => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RatesCubitStateCopyWith<RatesCubitState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $RatesCubitStateCopyWith<$Res> {
           RatesCubitState value, $Res Function(RatesCubitState) then) =
       _$RatesCubitStateCopyWithImpl<$Res, RatesCubitState>;
   @useResult
-  $Res call({List<Rate> rates});
+  $Res call({List<Rate> rates, Rate? currentRate});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$RatesCubitStateCopyWithImpl<$Res, $Val extends RatesCubitState>
   @override
   $Res call({
     Object? rates = null,
+    Object? currentRate = freezed,
   }) {
     return _then(_value.copyWith(
       rates: null == rates
           ? _value.rates
           : rates // ignore: cast_nullable_to_non_nullable
               as List<Rate>,
+      currentRate: freezed == currentRate
+          ? _value.currentRate
+          : currentRate // ignore: cast_nullable_to_non_nullable
+              as Rate?,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$_RatesCubitStateCopyWith<$Res>
       __$$_RatesCubitStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Rate> rates});
+  $Res call({List<Rate> rates, Rate? currentRate});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$_RatesCubitStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? rates = null,
+    Object? currentRate = freezed,
   }) {
     return _then(_$_RatesCubitState(
       rates: null == rates
           ? _value._rates
           : rates // ignore: cast_nullable_to_non_nullable
               as List<Rate>,
+      currentRate: freezed == currentRate
+          ? _value.currentRate
+          : currentRate // ignore: cast_nullable_to_non_nullable
+              as Rate?,
     ));
   }
 }
@@ -92,7 +103,8 @@ class __$$_RatesCubitStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RatesCubitState implements _RatesCubitState {
-  _$_RatesCubitState({required final List<Rate> rates}) : _rates = rates;
+  _$_RatesCubitState({required final List<Rate> rates, this.currentRate})
+      : _rates = rates;
 
   final List<Rate> _rates;
   @override
@@ -103,8 +115,11 @@ class _$_RatesCubitState implements _RatesCubitState {
   }
 
   @override
+  final Rate? currentRate;
+
+  @override
   String toString() {
-    return 'RatesCubitState(rates: $rates)';
+    return 'RatesCubitState(rates: $rates, currentRate: $currentRate)';
   }
 
   @override
@@ -112,12 +127,14 @@ class _$_RatesCubitState implements _RatesCubitState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RatesCubitState &&
-            const DeepCollectionEquality().equals(other._rates, _rates));
+            const DeepCollectionEquality().equals(other._rates, _rates) &&
+            (identical(other.currentRate, currentRate) ||
+                other.currentRate == currentRate));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_rates));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_rates), currentRate);
 
   @JsonKey(ignore: true)
   @override
@@ -127,11 +144,14 @@ class _$_RatesCubitState implements _RatesCubitState {
 }
 
 abstract class _RatesCubitState implements RatesCubitState {
-  factory _RatesCubitState({required final List<Rate> rates}) =
-      _$_RatesCubitState;
+  factory _RatesCubitState(
+      {required final List<Rate> rates,
+      final Rate? currentRate}) = _$_RatesCubitState;
 
   @override
   List<Rate> get rates;
+  @override
+  Rate? get currentRate;
   @override
   @JsonKey(ignore: true)
   _$$_RatesCubitStateCopyWith<_$_RatesCubitState> get copyWith =>

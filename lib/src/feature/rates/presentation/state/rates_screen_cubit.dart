@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:investment_assistant/src/helpers/SecureStorag/storage_keys.dart';
 
 import '../../domain/models/rate_model.dart';
 
@@ -15,28 +19,48 @@ class RatesCubit extends Cubit<RatesCubitState> {
     return state;
   }
 
-    String ratesBoxTitle = 'rates';
+  String ratesBoxTitle = 'rates';
   List<Rate> rates = [];
+  Rate? currentRate;
   List<int>? keys = [];
 
+  getSecureKey() async {
+    const secureStorage = FlutterSecureStorage();
+    final key = await secureStorage.read(key: StorageKeys.boxKey);
+    final encryptionKeyUint8List = base64Url.decode(key!);
+
+    return encryptionKeyUint8List;
+  }
+
   initRates() async {
-    var box = await Hive.openBox<Rate>(ratesBoxTitle);
+    final encryptionKeyUint8List = await getSecureKey();
+    var box = await Hive.openBox<Rate>(ratesBoxTitle,
+        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
     keys = [];
     keys = box.keys.cast<int>().toList();
     rates = [];
 
-    if (box.isNotEmpty) {
-      for (final key in keys!) {
-        rates.add(box.get(key)!);
-      }
+    for (final key in keys!) {
+      rates.add(box.get(key)!);
     }
 
-    box.close();
     emit(state.copyWith(rates: rates));
   }
 
+  Rate? getCurrentRate() {
+    Rate? currentRate;
+    for (var rate in rates) {
+      if (rate.isActive) {
+        currentRate = rate;
+      }
+    }
+    return currentRate;
+  }
+
   void addRate(Rate rate) async {
-    Box<Rate> allRates = await Hive.openBox<Rate>(ratesBoxTitle);
+    final encryptionKeyUint8List = await getSecureKey();
+    Box<Rate> allRates = await Hive.openBox<Rate>(ratesBoxTitle,
+        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
     final Map<dynamic, Rate> ratesMap = allRates.toMap();
     dynamic activeKey;
     dynamic changeRate;
@@ -49,6 +73,9 @@ class RatesCubit extends Cubit<RatesCubitState> {
           value.isActive = false;
           changeRate = value;
           activeKey = key;
+        } else {
+          changeRate = value;
+          activeKey = key;
         }
       });
       allRates.put(activeKey, changeRate);
@@ -58,6 +85,7 @@ class RatesCubit extends Cubit<RatesCubitState> {
 
   void updateRate(Rate rate) async {
     List<Rate> allRates = List.from(state.rates);
+    final encryptionKeyUint8List = await getSecureKey();
     if (rate.isActive) {
       for (final element in allRates) {
         if (element.isActive) {
@@ -69,7 +97,9 @@ class RatesCubit extends Cubit<RatesCubitState> {
     final index = allRates.indexWhere((element) => element.id == rate.id);
     allRates[index] = rate;
 
-    await Hive.openBox<Rate>(ratesBoxTitle).then((value) {
+    await Hive.openBox<Rate>(ratesBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((value) {
       final Map<dynamic, Rate> ratesMap = value.toMap();
 
       for (final element in allRates) {
@@ -84,7 +114,11 @@ class RatesCubit extends Cubit<RatesCubitState> {
   }
 
   void deleteRate(int id) async {
-    await Hive.openBox<Rate>(ratesBoxTitle).then((value) {
+    final encryptionKeyUint8List = await getSecureKey();
+
+    await Hive.openBox<Rate>(ratesBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((value) {
       final Map<dynamic, Rate> ratesMap = value.toMap();
       dynamic activeKey;
       ratesMap.forEach((key, value) {
@@ -104,7 +138,11 @@ class RatesCubit extends Cubit<RatesCubitState> {
 
   void searchRates(String query) async {
     List<Rate> ratesList = [];
-    await Hive.openBox<Rate>(ratesBoxTitle).then((rates) {
+    final encryptionKeyUint8List = await getSecureKey();
+
+    await Hive.openBox<Rate>(ratesBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((rates) {
       rates.toMap().forEach((key, value) => ratesList.add(value));
     });
 
@@ -116,5 +154,30 @@ class RatesCubit extends Cubit<RatesCubitState> {
     }).toList();
 
     emit(state.copyWith(rates: suggestions));
+  }
+
+  void changeRate(int id) async {
+    List<Rate> allRates = [];
+    final encryptionKeyUint8List = await getSecureKey();
+
+    await Hive.openBox<Rate>(ratesBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((value) {
+      final Map<dynamic, Rate> ratesMap = value.toMap();
+      ratesMap.forEach((key, value) {
+        if (value.id == id) {
+          value.isActive = true;
+          currentRate = value;
+        } else {
+          value.isActive = false;
+        }
+        allRates.add(value);
+      });
+      return value.putAll(ratesMap);
+    }).then(
+      (value) => initRates(),
+    );
+
+    emit(state.copyWith(rates: allRates));
   }
 }

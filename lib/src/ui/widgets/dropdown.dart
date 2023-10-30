@@ -5,14 +5,19 @@ import 'package:provider/provider.dart';
 import '../../localizations/locale_provider.dart';
 
 class LanguageMenu extends StatelessWidget {
-  const LanguageMenu({super.key});
+  const LanguageMenu(
+      {required this.languageCode, required this.setCurrentLocale, super.key});
+
+  final String? languageCode;
+  final void Function(Locale value) setCurrentLocale;
 
   @override
   Widget build(BuildContext context) {
+    final currentLocale = AllLocale.all.firstWhere((locale) => locale.languageCode == languageCode);
     return DropdownButton<Locale>(
       alignment: Alignment.centerRight,
       icon: const Visibility(visible: false, child: Icon(Icons.arrow_downward)),
-      value: Provider.of<LocaleProvider>(context).locale,
+      value: currentLocale,
       elevation: 16,
       borderRadius: const BorderRadius.all(
         Radius.circular(10.0),
@@ -23,7 +28,8 @@ class LanguageMenu extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
       ),
       onChanged: (Locale? value) {
-        Provider.of<LocaleProvider>(context, listen: false).setLocale(value!);
+        setCurrentLocale(value!);
+        Provider.of<LocaleProvider>(context, listen: false).setLocale(value);
       },
       items: AllLocale.all.map<DropdownMenuItem<Locale>>((Locale value) {
         return DropdownMenuItem<Locale>(

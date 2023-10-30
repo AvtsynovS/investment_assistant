@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/deals/domain/models/deal_model.dart';
+import 'package:investment_assistant/src/helpers/SecureStorag/storage_keys.dart';
 
 part 'deals_screen_state.dart';
 part 'deals_screen_cubit.freezed.dart';
@@ -21,8 +25,18 @@ class DealsCubit extends Cubit<DealsCubitState> {
   List<Deal> allDeals = [];
   List<int>? keys = [];
 
+  getSecureKey() async {
+    const secureStorage = FlutterSecureStorage();
+    final key = await secureStorage.read(key: StorageKeys.boxKey);
+    final encryptionKeyUint8List = base64Url.decode(key!);
+
+    return encryptionKeyUint8List;
+  }
+
   initDeals() async {
-    var box = await Hive.openBox<Deal>(dealsBoxTitle);
+    final encryptionKeyUint8List = await getSecureKey();
+    var box = await Hive.openBox<Deal>(dealsBoxTitle,
+        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
     keys = [];
     keys = box.keys.cast<int>().toList();
     allDeals = [];
@@ -33,18 +47,23 @@ class DealsCubit extends Cubit<DealsCubitState> {
       }
     }
 
-    box.close();
+    // box.close();
     emit(state.copyWith(deals: allDeals));
   }
 
   void addDeal(Deal deal) async {
-    await Hive.openBox<Deal>(dealsBoxTitle)
+    final encryptionKeyUint8List = await getSecureKey();
+    await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
         .then((deals) => deals.put(deal.id, deal))
         .then((value) => initDeals());
   }
 
   void updateDeal(Deal deal) async {
-    await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+    final encryptionKeyUint8List = await getSecureKey();
+    await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((value) {
       final Map<dynamic, Deal> dealsMap = value.toMap();
       dynamic activeKey;
       dealsMap.forEach((key, value) {
@@ -68,9 +87,12 @@ class DealsCubit extends Cubit<DealsCubitState> {
   void updateDealBySell(Deal deal) async {
     List<Deal> allDeals = List.from(state.deals);
     final index = allDeals.indexWhere((element) => element.id == deal.id);
+    final encryptionKeyUint8List = await getSecureKey();
 
     if (deal.sell != null) {
-      await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+      await Hive.openBox<Deal>(dealsBoxTitle,
+              encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+          .then((value) {
         final Map<dynamic, Deal> dealsMap = value.toMap();
         dynamic activeKey;
         dealsMap.forEach((key, value) {
@@ -83,7 +105,9 @@ class DealsCubit extends Cubit<DealsCubitState> {
         (value) => initDeals(),
       );
     } else {
-      await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+      await Hive.openBox<Deal>(dealsBoxTitle,
+              encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+          .then((value) {
         final Map<dynamic, Deal> dealsMap = value.toMap();
         dynamic activeKey;
         dealsMap.forEach((key, value) {
@@ -108,7 +132,10 @@ class DealsCubit extends Cubit<DealsCubitState> {
   }
 
   void deleteDeal(int id) async {
-    await Hive.openBox<Deal>(dealsBoxTitle).then((value) {
+    final encryptionKeyUint8List = await getSecureKey();
+    await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((value) {
       final Map<dynamic, Deal> dealsMap = value.toMap();
       dynamic activeKey;
       dealsMap.forEach((key, value) {
@@ -127,8 +154,11 @@ class DealsCubit extends Cubit<DealsCubitState> {
   }
 
   void searchDeals(String query) async {
+    final encryptionKeyUint8List = await getSecureKey();
     List<Deal> dealsList = [];
-    await Hive.openBox<Deal>(dealsBoxTitle).then((deals) {
+    await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((deals) {
       deals.toMap().forEach((key, value) => dealsList.add(value));
     });
 
@@ -146,9 +176,12 @@ class DealsCubit extends Cubit<DealsCubitState> {
     }
   }
 
-    void filterForDateRange(List<String> dateRange) async {
+  void filterForDateRange(List<String> dateRange) async {
+    final encryptionKeyUint8List = await getSecureKey();
     List<Deal> filterCloseDeals = [];
-    await Hive.openBox<Deal>(dealsBoxTitle).then((closeDeals) {
+    await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List))
+        .then((closeDeals) {
       closeDeals.toMap().forEach((key, value) {
         if (dateRange.contains(value.createAt)) {
           filterCloseDeals.add(value);

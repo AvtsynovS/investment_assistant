@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:investment_assistant/src/feature/settings/presentation/state/main_cubit.dart';
+import 'package:investment_assistant/src/localizations/l10n/all_locales.dart';
 import 'package:investment_assistant/src/ui/widgets/dropdown.dart';
 import 'package:investment_assistant/src/ui/widgets/exit_modal.dart';
-import '../../../../blocs/main/main_cubit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,7 +16,7 @@ class Settings extends StatefulWidget {
 }
 
 class SettingsState extends State<Settings> {
-  _showSimpleModalDialog(context) {
+  _showExitModalDialog(context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -31,6 +32,8 @@ class SettingsState extends State<Settings> {
             body: ValueListenableBuilder<Box>(
                 valueListenable: Hive.box('settings').listenable(),
                 builder: (context, box, widget) {
+                  final languageCode = box.get('locale',
+                      defaultValue: AllLocale.all[0].languageCode);
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15.0, vertical: 30.0),
@@ -56,28 +59,33 @@ class SettingsState extends State<Settings> {
                             AppLocalizations.of(context)!.changeLanguage,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          trailing: const LanguageMenu(),
+                          trailing: LanguageMenu(
+                            languageCode: languageCode,
+                            setCurrentLocale: (Locale locale) {
+                              box.put('locale', locale.languageCode);
+                            },
+                          ),
                         ),
+                        // Theme
                         ListTile(
-                            tileColor: Colors.transparent,
-                            title: Text(
-                              AppLocalizations.of(context)!.changeTheme,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            trailing: Switch(
-                              activeColor: Theme.of(context).primaryColor,
-                              thumbColor:
-                                  Theme.of(context).switchTheme.thumbColor,
-                              trackColor:
-                                  Theme.of(context).switchTheme.trackColor,
-                              value: box.get('isDarkMode',
-                                  defaultValue: false),
-                              onChanged: (value) {
-                                box.put('isDarkMode', value);
-                                context.read<MainCubit>().changeTheme(value);
-                              },
-                            ),
-                            contentPadding: const EdgeInsets.only(left: 14.0)),
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            AppLocalizations.of(context)!.changeTheme,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          trailing: Switch(
+                            activeColor: Theme.of(context).primaryColor,
+                            thumbColor:
+                                Theme.of(context).switchTheme.thumbColor,
+                            trackColor:
+                                Theme.of(context).switchTheme.trackColor,
+                            value: box.get('isDarkMode', defaultValue: false),
+                            onChanged: (value) {
+                              context.read<MainCubit>().changeTheme(value);
+                            },
+                          ),
+                          contentPadding: const EdgeInsets.only(left: 14.0),
+                        ),
                         ListTile(
                           tileColor: Colors.transparent,
                           title: Text(
@@ -91,7 +99,7 @@ class SettingsState extends State<Settings> {
                             Icons.exit_to_app,
                             color: Colors.red,
                           ),
-                          onTap: () => _showSimpleModalDialog(context),
+                          onTap: () => _showExitModalDialog(context),
                         ),
                       ],
                     ),

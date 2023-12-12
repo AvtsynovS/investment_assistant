@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/secure_storag_model.dart';
 
 class Registration extends StatefulWidget {
@@ -50,10 +47,8 @@ class _RegistrationState extends State<Registration> {
   }
 
   void _addUser(String login, String password) {
-    final key = Hive.generateSecureKey();
     SecureStoragModel().setLogin(login);
     SecureStoragModel().setPassword(password);
-    SecureStoragModel().setToken(base64UrlEncode(key));
   }
 
   @override

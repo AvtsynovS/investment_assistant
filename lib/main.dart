@@ -25,20 +25,30 @@ import 'package:investment_assistant/src/themes/src/custom_theme.dart';
 import 'package:investment_assistant/src/ui/screens/home_page.dart';
 
 import 'src/feature/deals/presentation/widgets/add_deal.dart';
+import 'src/helpers/SecureStorag/secure_storag_model.dart';
 import 'src/localizations/l10n/all_locales.dart';
 import 'src/localizations/locale_provider.dart';
 
-void main() async {
+Future<void> main() async {
+  await Hive.initFlutter();
   Hive.registerAdapter(DealAdapter());
   Hive.registerAdapter(RateAdapter());
   Hive.registerAdapter(MainSettingsAdapter());
-  await Hive.initFlutter();
+
   const secureStorage = FlutterSecureStorage();
-  final key = await secureStorage.read(key: StorageKeys.boxKey);
+  var key = await secureStorage.read(key: StorageKeys.boxKey);
+
+  if (key == null) {
+    final globalSettingsKey = Hive.generateSecureKey();
+    SecureStoragModel().setToken(base64UrlEncode(globalSettingsKey));
+    key = await secureStorage.read(key: StorageKeys.boxKey);
+  }
+
   final encryptionKeyUint8List = base64Url.decode(key!);
 
-  await Hive.openBox('settings',
+  await Hive.openBox<MainSettings>('settings',
       encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+
   runApp(const MyApp());
 }
 
@@ -52,65 +62,69 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: Hive.box('settings').listenable(),
-        builder: (context, box, widget) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (BuildContext context) => MainCubit(),
-              ),
-              BlocProvider(
-                create: (BuildContext context) => DealsCubit(),
-              ),
-              BlocProvider(
-                create: (BuildContext context) => RatesCubit(),
-              ),
-              BlocProvider(
-                create: (BuildContext context) => HistoryCubit(),
-              ),
-            ],
-            child: BlocBuilder<MainCubit, MainCubitState>(
-              builder: (context, state) {
-                final isDarkMode = box.get('isDarkMode', defaultValue: false);
-                final String languageCode = box.get('locale',
-                    defaultValue: AllLocale.all[0].languageCode);
-                final currentLocale = AllLocale.all.firstWhere(
-                    (locale) => locale.languageCode == languageCode);
-
-                return ChangeNotifierProvider<LocaleProvider>(
-                  create: (_) => LocaleProvider(),
-                  builder: (context, child) {
-                    return MaterialApp(
-                      debugShowCheckedModeBanner: false,
-                      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-                      darkTheme: CustomTheme.darkTheme,
-                      theme: CustomTheme.lightTheme,
-                      supportedLocales: AllLocale.all,
-                      locale: currentLocale,
-                      localizationsDelegates: const [
-                        AppLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
-                      initialRoute: '/',
-                      routes: {
-                        '/': (context) => const WelcomePage(),
-                        '/homePage': (context) =>
-                            const HomePage(selectedTab: 0),
-                        '/profile': (context) => const ProfilePage(),
-                        '/addDeal': (context) => const AddDeal(),
-                        '/addRate': (context) => const AddRate(),
-                        '/login': (context) => const LoginForm(),
-                        '/registration': (context) => const Registration(),
-                      },
-                    );
-                  },
-                );
-              },
+    return ValueListenableBuilder<Box<MainSettings>>(
+      valueListenable: Hive.box<MainSettings>("settings").listenable(),
+      builder: (context, box, child) {
+        final settings = box.get('isDarkMode',
+            defaultValue: MainSettings(isDarkMode: false)) as MainSettings;
+        final languageCode = box.get(
+          'locale',
+          defaultValue: MainSettings(
+              isDarkMode: false, locale: AllLocale.all[0].languageCode),
+        ) as MainSettings;
+        final currentLocale = AllLocale.all.firstWhere(
+            (locale) => locale.languageCode == languageCode.locale);
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (BuildContext context) => MainCubit(),
             ),
-          );
-        });
+            BlocProvider(
+              create: (BuildContext context) => DealsCubit(),
+            ),
+            BlocProvider(
+              create: (BuildContext context) => RatesCubit(),
+            ),
+            BlocProvider(
+              create: (BuildContext context) => HistoryCubit(),
+            ),
+          ],
+          child: BlocBuilder<MainCubit, MainCubitState>(
+            builder: (context, state) {
+              return ChangeNotifierProvider<LocaleProvider>(
+                create: (_) => LocaleProvider(),
+                builder: (context, child) {
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    themeMode:
+                        settings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                    darkTheme: CustomTheme.darkTheme,
+                    theme: CustomTheme.lightTheme,
+                    supportedLocales: AllLocale.all,
+                    locale: currentLocale,
+                    localizationsDelegates: const [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    initialRoute: '/',
+                    routes: {
+                      '/': (context) => const WelcomePage(),
+                      '/homePage': (context) => const HomePage(selectedTab: 0),
+                      '/profile': (context) => const ProfilePage(),
+                      '/addDeal': (context) => const AddDeal(),
+                      '/addRate': (context) => const AddRate(),
+                      '/login': (context) => const LoginForm(),
+                      '/registration': (context) => const Registration(),
+                    },
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

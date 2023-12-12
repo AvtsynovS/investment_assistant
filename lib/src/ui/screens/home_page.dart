@@ -9,6 +9,7 @@ import 'package:investment_assistant/src/feature/rates/presentation/state/rates_
 import 'package:investment_assistant/src/feature/settings/presentation/screen/settings.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:investment_assistant/src/feature/settings/presentation/state/main_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.selectedTab, Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    context.read<MainCubit>().initSettings();
     context.read<RatesCubit>().initRates();
     context.read<DealsCubit>().initDeals();
     context.read<HistoryCubit>().initHistory();

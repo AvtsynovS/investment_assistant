@@ -18,8 +18,8 @@ class MainSettingsAdapter extends TypeAdapter<MainSettings> {
     };
     return MainSettings(
       isDarkMode: fields[1] as bool,
-      avatar: fields[0] as ImageProvider<Object>?,
-      locale: fields[2] as Locale?,
+      avatar: fields[0] as String?,
+      locale: fields[2] as String?,
     );
   }
 

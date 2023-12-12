@@ -5,6 +5,6 @@ class MainCubitState with _$MainCubitState {
   const factory MainCubitState({
     final ImageProvider<Object>? avatar,
     @Default(false) bool isDarkMode,
-    Locale? locale,
+    String? locale,
   }) = _MainCubitState;
 }

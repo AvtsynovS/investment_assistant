@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:investment_assistant/src/feature/settings/domain/models/main_settings_model.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/secure_storag_model.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/storage_keys.dart';
 
@@ -18,14 +19,12 @@ class MainCubit extends Cubit<MainCubitState> {
   MainCubit()
       : super(const MainCubitState(
           avatar: AssetImage('assets/images/defaultPerson.jpg'),
+          isDarkMode: true,
         ));
 
   String settingsBoxTitle = 'settings';
-
-  MainCubitState initState() {
-    emit(state);
-    return state;
-  }
+  List<String>? keys = [];
+  final settingsBox = Hive.box<MainSettings>("settings");
 
   getSecureKey() async {
     const secureStorage = FlutterSecureStorage();
@@ -35,39 +34,60 @@ class MainCubit extends Cubit<MainCubitState> {
     return encryptionKeyUint8List;
   }
 
+  MainCubitState initState() {
+    emit(state);
+    return state;
+  }
+
+  initSettings() async {
+    settingsBox.toMap().forEach((key, value) {
+      switch (key) {
+        case 'isDarkMode':
+          emit(state.copyWith(isDarkMode: value.isDarkMode));
+        case 'locale':
+          emit(state.copyWith(locale: value.locale));
+        case 'avatar':
+          () async {
+            final image =
+                await ImagePicker().pickImage(source: ImageSource.gallery);
+            if (image == null) return;
+
+            Uint8List avatar = File(image.path).readAsBytesSync();
+            emit(state.copyWith(avatar: MemoryImage(avatar)));
+          };
+      }
+    });
+    initState();
+  }
+
   void initAvatar() async {
-    final encryptionKeyUint8List = await getSecureKey();
-    var box = await Hive.openBox(settingsBoxTitle,
-        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+    final img64 = settingsBox.get('avatar');
 
-    final String img64 = await box.get('avatar');
-    Uint8List avatar = base64.decode(img64);
-
-    emit(state.copyWith(avatar: MemoryImage(avatar)));
+    if (img64 != null && img64.avatar != null) {
+      Uint8List avatar = base64.decode(img64.avatar!);
+      emit(state.copyWith(avatar: MemoryImage(avatar)));
+    }
   }
 
   void changeTheme(bool value) async {
-    final encryptionKeyUint8List = await getSecureKey();
-
-    var box = await Hive.openBox(settingsBoxTitle,
-        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
-    box.put('isDarkMode', value).then((value) => initState());
+    settingsBox
+        .put('isDarkMode', MainSettings(isDarkMode: value))
+        .then((value) => initState());
 
     emit(state.copyWith(isDarkMode: value));
   }
 
   Future setAvatar() async {
-    final encryptionKeyUint8List = await getSecureKey();
-    var box = await Hive.openBox(settingsBoxTitle,
-        encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
     final bytes = File(image.path).readAsBytesSync();
     String img64 = base64Encode(bytes);
-
     final File avatar = File(image.path);
-    box.put('avatar', img64).then((value) => initAvatar());
+
+    settingsBox
+        .put('avatar', MainSettings(avatar: img64))
+        .then((value) => initAvatar());
     emit(state.copyWith(avatar: Image.file(avatar).image));
   }
 

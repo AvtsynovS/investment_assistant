@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:number_text_input_formatter/number_text_input_formatter.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyFormField extends StatelessWidget {
   const MyFormField({
@@ -31,14 +34,27 @@ class MyFormField extends StatelessWidget {
         autofocus: autofocus ?? false,
         enabled: enabled ?? true,
         keyboardType: typeField,
-        inputFormatters: fieldTitle == 'Quantity'
-            ? <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(10),
+        inputFormatters: fieldTitle == AppLocalizations.of(context)!.quantity ||
+                fieldTitle == AppLocalizations.of(context)!.monthlyCommission
+            ? [
+                NumberTextInputFormatter(
+                  integerDigits: 10,
+                  decimalDigits: 0,
+                  maxValue: '1000000000',
+                  allowNegative: false,
+                  overrideDecimalPoint: true,
+                  insertDecimalDigits: true,
+                ),
               ]
             : [
-                FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
-                LengthLimitingTextInputFormatter(8),
+                NumberTextInputFormatter(
+                  integerDigits: 10,
+                  decimalDigits: 8,
+                  maxValue: '1000000000.00',
+                  allowNegative: false,
+                  overrideDecimalPoint: true,
+                  insertDecimalDigits: false,
+                ),
               ],
         decoration: InputDecoration(
           labelText: fieldTitle,

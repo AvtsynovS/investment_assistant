@@ -4,6 +4,7 @@ import 'package:investment_assistant/src/themes/theme.dart';
 class CustomTheme {
   // ##### Light Theme #####
   static ThemeData lightTheme = ThemeData(
+    useMaterial3: false,
     checkboxTheme: CheckboxThemeData(
       checkColor: MaterialStateProperty.all(checkedLightColor),
       fillColor: MaterialStateProperty.all(checkboxBackgroundLightColor),
@@ -109,6 +110,7 @@ class CustomTheme {
 
   // ##### Dark Theme #####
   static ThemeData darkTheme = ThemeData(
+    useMaterial3: false,
     checkboxTheme: CheckboxThemeData(
       checkColor: MaterialStateProperty.all(checkedDarkColor),
       fillColor: MaterialStateProperty.all(checkboxBackgroundDarkColor),

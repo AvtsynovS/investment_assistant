@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainCubitState {
-// final String? avatar,
   ImageProvider<Object>? get avatar => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
   String? get locale => throw _privateConstructorUsedError;
@@ -117,7 +116,6 @@ class __$$_MainCubitStateCopyWithImpl<$Res>
 class _$_MainCubitState implements _MainCubitState {
   const _$_MainCubitState({this.avatar, this.isDarkMode = false, this.locale});
 
-// final String? avatar,
   @override
   final ImageProvider<Object>? avatar;
   @override
@@ -158,7 +156,7 @@ abstract class _MainCubitState implements MainCubitState {
       final bool isDarkMode,
       final String? locale}) = _$_MainCubitState;
 
-  @override // final String? avatar,
+  @override
   ImageProvider<Object>? get avatar;
   @override
   bool get isDarkMode;

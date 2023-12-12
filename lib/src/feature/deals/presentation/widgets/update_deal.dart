@@ -7,6 +7,7 @@ import 'package:investment_assistant/src/helpers/get_profit.dart';
 import 'package:investment_assistant/src/ui/screens/home_page.dart';
 
 import '../../../../ui/widgets/my_form_field.dart';
+import '../../../rates/domain/models/rate_model.dart';
 import '../state/deals_screen_cubit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -193,46 +194,54 @@ class _UpdateDealState extends State<UpdateDeal> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Deal deal = Deal(
-                            id: widget.deal.id,
-                            assetsTitle: _titleDealController.text,
-                            assetsType: _selectedType,
-                            buy: double.parse(_buyController.text),
-                            quantity: int.parse(_quantityController.text),
-                            createAt: widget.deal.createAt,
-                            sell: _sellController.text != ''
-                                ? double.parse(_sellController.text)
-                                : null,
-                            additinalProfit: _additinalProfitController.text !=
-                                    ''
-                                ? double.parse(_additinalProfitController.text)
-                                : null,
-                          );
+                          if (_formKey.currentState!.validate()) {
+                            Deal deal = Deal(
+                              id: widget.deal.id,
+                              assetsTitle: _titleDealController.text,
+                              assetsType: _selectedType,
+                              buy: double.parse(_buyController.text),
+                              quantity: int.parse(_quantityController.text),
+                              createAt: widget.deal.createAt,
+                              sell: _sellController.text != ''
+                                  ? double.parse(_sellController.text)
+                                  : null,
+                              additinalProfit:
+                                  _additinalProfitController.text != ''
+                                      ? double.parse(
+                                          _additinalProfitController.text)
+                                      : null,
+                            );
 
-                          final activeRate = rates.isNotEmpty
-                              ? rates.firstWhere(
-                                  (element) => element.isActive == true)
-                              : null;
-                          if (_formKey.currentState!.validate() &&
-                              _sellController.text != '' &&
-                              activeRate == null) {
-                            dealsCubit.updateDeal(deal);
-                            _showActiveRateError(context);
-                          }
-                          if (_formKey.currentState!.validate() &&
-                              _sellController.text == '' &&
-                              activeRate == null) {
-                            dealsCubit.updateDeal(deal);
-                            Navigator.pushNamed(context, '/homePage');
-                          }
+                            final List<Rate?> rateList = rates.isNotEmpty
+                                ? rates.map((item) {
+                                    if (item.isActive) {
+                                      return item;
+                                    }
+                                    return null;
+                                  }).toList()
+                                : [null];
 
-                          if (_formKey.currentState!.validate() &&
-                              activeRate != null) {
-                            final updateDeal = getProfit(deal, activeRate);
-                            dealsCubit.updateDealBySell(updateDeal);
+                            Rate? activeRate;
 
-                            historyCubit.updateHistory(updateDeal);
-                            Navigator.pushNamed(context, '/homePage');
+                            for (var element in rateList) {
+                              if (element != null) {
+                                activeRate = element;
+                                break;
+                              }
+                            }
+
+                            if (activeRate == null) {
+                              dealsCubit.updateDeal(deal);
+                              _showActiveRateError(context);
+                            }
+
+                            if (activeRate != null) {
+                              final updateDeal = getProfit(deal, activeRate);
+                              dealsCubit.updateDealBySell(updateDeal);
+
+                              historyCubit.updateHistory(updateDeal);
+                              Navigator.pushNamed(context, '/homePage');
+                            }
                           }
                         },
                         child: Text(

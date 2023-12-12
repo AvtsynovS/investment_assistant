@@ -184,7 +184,7 @@ class _UpdateRateState extends State<UpdateRate> {
                           }
                         },
                         child: Text(
-                            AppLocalizations.of(context)!.updateDealTitleBtn),
+                            AppLocalizations.of(context)!.updateRateTitleBtn),
                       ),
                     ),
                   ],

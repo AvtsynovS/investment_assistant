@@ -35,16 +35,15 @@ Future<void> main() async {
   Hive.registerAdapter(RateAdapter());
   Hive.registerAdapter(MainSettingsAdapter());
 
-  const secureStorage = FlutterSecureStorage();
-  var key = await secureStorage.read(key: StorageKeys.boxKey);
+  var secureKey = await SecureStoragModel().readToken();
 
-  if (key == null) {
+  if (secureKey == null) {
     final globalSettingsKey = Hive.generateSecureKey();
     SecureStoragModel().setToken(base64UrlEncode(globalSettingsKey));
-    key = await secureStorage.read(key: StorageKeys.boxKey);
+    secureKey = await SecureStoragModel().readToken();
   }
 
-  final encryptionKeyUint8List = base64Url.decode(key!);
+  final encryptionKeyUint8List = base64Url.decode(secureKey!);
 
   await Hive.openBox<MainSettings>('settings',
       encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
@@ -72,8 +71,8 @@ class _MyAppState extends State<MyApp> {
           defaultValue: MainSettings(
               isDarkMode: false, locale: AllLocale.all[0].languageCode),
         ) as MainSettings;
-        final currentLocale = AllLocale.all.firstWhere(
-            (locale) => locale.languageCode == languageCode.locale);
+        final currentLocale = AllLocale.all
+            .firstWhere((locale) => locale.languageCode == languageCode.locale);
         return MultiBlocProvider(
           providers: [
             BlocProvider(

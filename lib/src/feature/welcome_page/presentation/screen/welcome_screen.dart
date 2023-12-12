@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:investment_assistant/src/helpers/get_login.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
@@ -41,8 +42,7 @@ class WelcomePage extends StatelessWidget {
                       child: Text(
                         AppLocalizations.of(context)!.welcomeBody,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            ),
+                        style: const TextStyle(),
                       ),
                     )
                   ],
@@ -66,17 +66,27 @@ class WelcomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    OutlinedButton(
-                      onPressed: () {
-                        _registration(context);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 40.0),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.createAccount,
-                      ),
-                    )
+                    FutureBuilder(
+                        future: SecureLogin().getSecureLogin(),
+                        builder: (context, snapshot) {
+                          return SizedBox(
+                            child: snapshot.data == null
+                                ? OutlinedButton(
+                                    onPressed: () {
+                                      _registration(context);
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      minimumSize:
+                                          const Size(double.infinity, 40.0),
+                                    ),
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .createAccount,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          );
+                        })
                   ],
                 ),
               ),

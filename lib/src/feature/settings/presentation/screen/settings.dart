@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:investment_assistant/src/feature/settings/domain/models/main_settings_model.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/state/main_cubit.dart';
 import 'package:investment_assistant/src/localizations/l10n/all_locales.dart';
+import 'package:investment_assistant/src/ui/widgets/delete_profile_modal.dart';
 import 'package:investment_assistant/src/ui/widgets/dropdown.dart';
 import 'package:investment_assistant/src/ui/widgets/exit_modal.dart';
 
@@ -17,6 +18,14 @@ class Settings extends StatefulWidget {
 }
 
 class SettingsState extends State<Settings> {
+  _showDeleteProfileModalDialog(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const DeleteProfileModal();
+        });
+  }
+  
   _showExitModalDialog(context) {
     showDialog(
         context: context,
@@ -94,6 +103,21 @@ class SettingsState extends State<Settings> {
                             },
                           ),
                           contentPadding: const EdgeInsets.only(left: 14.0),
+                        ),
+                        ListTile(
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            AppLocalizations.of(context)!.deleteProfile,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(color: Colors.red),
+                          ),
+                          trailing: const Icon(
+                            Icons.folder_delete,
+                            color: Colors.red,
+                          ),
+                          onTap: () => _showDeleteProfileModalDialog(context),
                         ),
                         ListTile(
                           tileColor: Colors.transparent,

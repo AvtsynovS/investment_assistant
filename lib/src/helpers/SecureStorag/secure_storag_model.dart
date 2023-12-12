@@ -30,4 +30,8 @@ class SecureStoragModel {
   Future<void> setToken(boxKey) async {
     await _secureStorage.write(key: StorageKeys.boxKey, value: boxKey);
   }
+
+  Future<void> deleteProfile() async {
+    await _secureStorage.deleteAll();
+  }
 }

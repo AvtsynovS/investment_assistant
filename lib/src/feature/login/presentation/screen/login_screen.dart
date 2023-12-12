@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/secure_storag_model.dart';
+import 'package:investment_assistant/src/helpers/get_login.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -149,22 +150,33 @@ class LoginFormState extends State<LoginForm> {
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.loginMessage,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/registration');
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.registration,
-                        ),
-                      ),
-                    ],
-                  )
+                  FutureBuilder(
+                      future: SecureLogin().getSecureLogin(),
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          child: snapshot.data == null
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .loginMessage,
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/registration');
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .registration,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                        );
+                      })
                 ],
               ),
             ),

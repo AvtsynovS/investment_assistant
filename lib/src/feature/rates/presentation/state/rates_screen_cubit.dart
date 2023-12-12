@@ -47,6 +47,15 @@ class RatesCubit extends Cubit<RatesCubitState> {
     emit(state.copyWith(rates: rates));
   }
 
+    setDefaultRates() async {
+        final encryptionKeyUint8List = await getSecureKey();
+    final ratesBox = await Hive.openBox<Rate>(ratesBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+    ratesBox.deleteAll(['rates']);
+
+    emit(state.copyWith(rates: []));
+  }
+
   Rate? getCurrentRate() {
     Rate? currentRate;
     for (var rate in rates) {

@@ -22,6 +22,7 @@
     "profile": "Profile",
     "changeLanguage": "Change language",
     "changeTheme": "Change theme",
+    "deleteProfile": "Delete profile",
     "exitInApp": "Exit",
 
     "english": "English",
@@ -45,6 +46,7 @@
     "yes": "Yes",
     "no": "No",
     "exitModalMessage": "Do you really want to go out?",
+    "deleteProfileModalMessage": "Are you sure you want to delete your profile? All data will be lost!",
 
     "dealTitlePlaceholder": "Enter your deal title",
     "dealPricePlaceholder": "Enter price deal",

@@ -22,6 +22,7 @@
     "profile": "Профиль",
     "changeLanguage": "Сменить язык",
     "changeTheme": "Сменить тему",
+    "deleteProfile": "Удалить профиль",
     "exitInApp": "Выйти",
 
     "english": "Английский",
@@ -45,6 +46,7 @@
     "yes": "Да",
     "no": "Нет",
     "exitModalMessage": "Вы точно хотите выйти?",
+    "deleteProfileModalMessage": "Вы точно хотите удалить профиль? Все данные будут потеряны!",
 
     "dealTitlePlaceholder": "Введите название актива",
     "dealPricePlaceholder": "Введите цену актива",

@@ -47,6 +47,15 @@ class DealsCubit extends Cubit<DealsCubitState> {
     emit(state.copyWith(deals: allDeals));
   }
 
+  setDefaultDeals() async {
+        final encryptionKeyUint8List = await getSecureKey();
+    final dealsBox = await Hive.openBox<Deal>(dealsBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+    dealsBox.deleteAll(['deals']);
+
+    emit(state.copyWith(deals: []));
+  }
+
   void addDeal(Deal deal) async {
     final encryptionKeyUint8List = await getSecureKey();
     await Hive.openBox<Deal>(dealsBoxTitle,

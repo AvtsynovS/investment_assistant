@@ -65,11 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Stack(
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: avatar != null &&
-                                            avatar.avatar != null
-                                        ? MemoryImage(
-                                            base64.decode(avatar.avatar!))
-                                        : state.avatar,
+                                    backgroundImage:
+                                        avatar != null && avatar.avatar != null
+                                            ? MemoryImage(
+                                                base64.decode(avatar.avatar!))
+                                            : state.avatar,
                                     maxRadius: 55,
                                   ),
                                   Positioned(

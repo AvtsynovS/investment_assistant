@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:investment_assistant/src/feature/settings/domain/models/main_settings_model.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/secure_storag_model.dart';
 import 'package:investment_assistant/src/helpers/SecureStorag/storage_keys.dart';
+import 'package:investment_assistant/src/localizations/l10n/all_locales.dart';
 
 part 'main_state.dart';
 part 'main_cubit.freezed.dart';
@@ -25,14 +26,6 @@ class MainCubit extends Cubit<MainCubitState> {
   String settingsBoxTitle = 'settings';
   List<String>? keys = [];
   final settingsBox = Hive.box<MainSettings>("settings");
-
-  getSecureKey() async {
-    const secureStorage = FlutterSecureStorage();
-    final key = await secureStorage.read(key: StorageKeys.boxKey);
-    final encryptionKeyUint8List = base64Url.decode(key!);
-
-    return encryptionKeyUint8List;
-  }
 
   MainCubitState initState() {
     emit(state);
@@ -58,6 +51,19 @@ class MainCubit extends Cubit<MainCubitState> {
       }
     });
     initState();
+  }
+
+  setDefaultSettings() {
+    settingsBox.put('isDarkMode', MainSettings(isDarkMode: false));
+    settingsBox.put(
+        'locale', MainSettings(locale: AllLocale.all[0].languageCode));
+    settingsBox.put('avatar', MainSettings(avatar: null));
+
+    emit(state.copyWith(
+      isDarkMode: false,
+      locale: AllLocale.all[0].languageCode,
+      avatar: const AssetImage('assets/images/defaultPerson.jpg'),
+    ));
   }
 
   void initAvatar() async {

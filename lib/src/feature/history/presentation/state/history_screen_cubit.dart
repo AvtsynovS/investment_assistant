@@ -47,6 +47,15 @@ class HistoryCubit extends Cubit<HistoryCubitState> {
     emit(state.copyWith(closeDeals: allCloseDeals));
   }
 
+    setDefaultHistoryDeals() async {
+        final encryptionKeyUint8List = await getSecureKey();
+    final historyDealsBox = await Hive.openBox<Deal>(historyBoxTitle,
+            encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+    historyDealsBox.deleteAll(['history']);
+
+    emit(state.copyWith(closeDeals: []));
+  }
+
   void updateHistory(Deal deal) async {
     final encryptionKeyUint8List = await getSecureKey();
     if (deal.sell != null) {

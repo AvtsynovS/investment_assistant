@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainCubitState {
+// final String? avatar,
   ImageProvider<Object>? get avatar => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
-  Locale? get locale => throw _privateConstructorUsedError;
+  String? get locale => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MainCubitStateCopyWith<MainCubitState> get copyWith =>
@@ -31,7 +32,7 @@ abstract class $MainCubitStateCopyWith<$Res> {
           MainCubitState value, $Res Function(MainCubitState) then) =
       _$MainCubitStateCopyWithImpl<$Res, MainCubitState>;
   @useResult
-  $Res call({ImageProvider<Object>? avatar, bool isDarkMode, Locale? locale});
+  $Res call({ImageProvider<Object>? avatar, bool isDarkMode, String? locale});
 }
 
 /// @nodoc
@@ -63,7 +64,7 @@ class _$MainCubitStateCopyWithImpl<$Res, $Val extends MainCubitState>
       locale: freezed == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
-              as Locale?,
+              as String?,
     ) as $Val);
   }
 }
@@ -76,7 +77,7 @@ abstract class _$$_MainCubitStateCopyWith<$Res>
       __$$_MainCubitStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ImageProvider<Object>? avatar, bool isDarkMode, Locale? locale});
+  $Res call({ImageProvider<Object>? avatar, bool isDarkMode, String? locale});
 }
 
 /// @nodoc
@@ -106,7 +107,7 @@ class __$$_MainCubitStateCopyWithImpl<$Res>
       locale: freezed == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
-              as Locale?,
+              as String?,
     ));
   }
 }
@@ -116,13 +117,14 @@ class __$$_MainCubitStateCopyWithImpl<$Res>
 class _$_MainCubitState implements _MainCubitState {
   const _$_MainCubitState({this.avatar, this.isDarkMode = false, this.locale});
 
+// final String? avatar,
   @override
   final ImageProvider<Object>? avatar;
   @override
   @JsonKey()
   final bool isDarkMode;
   @override
-  final Locale? locale;
+  final String? locale;
 
   @override
   String toString() {
@@ -154,14 +156,14 @@ abstract class _MainCubitState implements MainCubitState {
   const factory _MainCubitState(
       {final ImageProvider<Object>? avatar,
       final bool isDarkMode,
-      final Locale? locale}) = _$_MainCubitState;
+      final String? locale}) = _$_MainCubitState;
 
-  @override
+  @override // final String? avatar,
   ImageProvider<Object>? get avatar;
   @override
   bool get isDarkMode;
   @override
-  Locale? get locale;
+  String? get locale;
   @override
   @JsonKey(ignore: true)
   _$$_MainCubitStateCopyWith<_$_MainCubitState> get copyWith =>

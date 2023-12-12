@@ -10,6 +10,7 @@ import 'package:investment_assistant/src/feature/settings/presentation/widgets/c
 import 'package:investment_assistant/src/feature/settings/presentation/widgets/change_password_form.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/widgets/change_rate_form.dart';
 
+import '../../../domain/models/main_settings_model.dart';
 import 'profile_menu_item.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,16 +25,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: Hive.box('settings').listenable(),
+    return ValueListenableBuilder<Box<MainSettings>>(
+        valueListenable: Hive.box<MainSettings>('settings').listenable(),
         builder: (context, box, widget) {
           return BlocBuilder<MainCubit, MainCubitState>(
             builder: (context, state) {
               final settingsCubit = context.read<MainCubit>();
               final activeRate = context.read<RatesCubit>().getCurrentRate();
-              final String? avatar = box.get(
-                'avatar',
-              );
+              final avatar =
+                  box.get('avatar', defaultValue: MainSettings(avatar: null));
 
               return Scaffold(
                   appBar: AppBar(
@@ -65,8 +65,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Stack(
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: avatar != null
-                                        ? MemoryImage(base64.decode(avatar))
+                                    backgroundImage: avatar != null &&
+                                            avatar.avatar != null
+                                        ? MemoryImage(
+                                            base64.decode(avatar.avatar!))
                                         : state.avatar,
                                     maxRadius: 55,
                                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:investment_assistant/src/feature/settings/domain/models/main_settings_model.dart';
 import 'package:investment_assistant/src/feature/settings/presentation/state/main_cubit.dart';
 import 'package:investment_assistant/src/localizations/l10n/all_locales.dart';
 import 'package:investment_assistant/src/ui/widgets/dropdown.dart';
@@ -29,11 +30,19 @@ class SettingsState extends State<Settings> {
     return BlocBuilder<MainCubit, MainCubitState>(
       builder: (context, state) {
         return Scaffold(
-            body: ValueListenableBuilder<Box>(
-                valueListenable: Hive.box('settings').listenable(),
+            body: ValueListenableBuilder<Box<MainSettings>>(
+                valueListenable:
+                    Hive.box<MainSettings>('settings').listenable(),
                 builder: (context, box, widget) {
-                  final languageCode = box.get('locale',
-                      defaultValue: AllLocale.all[0].languageCode);
+                  final settings = box.get('isDarkMode',
+                          defaultValue: MainSettings(isDarkMode: false))
+                      as MainSettings;
+                  final languageCode = box.get(
+                    'locale',
+                    defaultValue: MainSettings(
+                        isDarkMode: false,
+                        locale: AllLocale.all[0].languageCode),
+                  );
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15.0, vertical: 30.0),
@@ -60,9 +69,10 @@ class SettingsState extends State<Settings> {
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           trailing: LanguageMenu(
-                            languageCode: languageCode,
+                            languageCode: languageCode?.locale,
                             setCurrentLocale: (Locale locale) {
-                              box.put('locale', locale.languageCode);
+                              box.put('locale',
+                                  MainSettings(locale: locale.languageCode));
                             },
                           ),
                         ),
@@ -78,7 +88,7 @@ class SettingsState extends State<Settings> {
                                 Theme.of(context).switchTheme.thumbColor,
                             trackColor:
                                 Theme.of(context).switchTheme.trackColor,
-                            value: box.get('isDarkMode', defaultValue: false),
+                            value: settings.isDarkMode,
                             onChanged: (value) {
                               context.read<MainCubit>().changeTheme(value);
                             },
